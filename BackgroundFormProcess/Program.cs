@@ -29,6 +29,8 @@ namespace BackgroundFormProcess
         {
             Thread appServiceThread = new Thread(new ThreadStart(ThreadProc));
             appServiceThread.Start();
+
+            CheckVS2017();
         }
 
         /// <summary>
@@ -137,6 +139,13 @@ namespace BackgroundFormProcess
                     e.Next(1, instances, out fetched);
                     if (fetched > 0)
                     {
+                        var instance = instances[0];
+                        var instance2 = (ISetupInstance2)instances[0];
+                        var state = instance2.GetState();
+
+                        var installationVersion = instance.GetInstallationVersion();
+                        PrintWorkloads(instance2.GetPackages());
+
                         count++;
                     }
                 }
@@ -147,6 +156,30 @@ namespace BackgroundFormProcess
             catch
             {
                 return false;
+            }
+        }
+
+        private static void PrintWorkloads(ISetupPackageReference[] packages)
+        {
+            foreach (var package in packages)
+            {
+                var id = package.GetId();
+            }
+
+            var UWPPackage = packages.Where(p => p.GetId().ToLower().Contains("microsoft.visualstudio.component.windows10sdk.14393"));
+            if (UWPPackage.Count() > 0)
+            {
+                var temp = UWPPackage.First().GetType();
+            }
+
+            var workloads = from package in packages
+                            where string.Equals(package.GetType(), "Workload", StringComparison.OrdinalIgnoreCase)
+                            orderby package.GetId()
+                            select package;
+
+            foreach (var workload in workloads)
+            {
+                var id = workload.GetId();
             }
         }
 
