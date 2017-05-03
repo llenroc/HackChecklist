@@ -102,18 +102,19 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         public async void Init()
         {
-            string strConfiguration;
+            // TODO: Recover the remote configuration
+            string strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+
+            Configuration configuration;
             try
             {
-                strConfiguration = await _networkService.Get(ConfigFileUrl);
+                configuration = _jsonSerializerService.Deserialize<Configuration>(strConfiguration);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+                throw;
             }
-
-            var configuration = _jsonSerializerService.Deserialize<Configuration>(strConfiguration);
             CheckRequirementsAction();
             foreach (var requirement in configuration.Requirements)
             {
