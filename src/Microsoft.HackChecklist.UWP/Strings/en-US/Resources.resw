@@ -47,6 +47,7 @@
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -119,12 +120,6 @@
   </resheader>
   <data name="CheckNow.Content" xml:space="preserve">
     <value>Check now</value>
-  </data>
-  <data name="GetUpdates.Content" xml:space="preserve">
-    <value>Get updates</value>
-  </data>
-  <data name="NeedUpdate" xml:space="preserve">
-    <value>You need to update to {0}</value>
   </data>
   <data name="Restart.Content" xml:space="preserve">
     <value>Restart checker</value>

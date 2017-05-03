@@ -28,17 +28,14 @@ namespace Microsoft.HackChecklist.BackgroundProcess
         private const string UninstallRegistrySubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
         private const string UninstallRegistryKeyValue = "DisplayName";
 
-        private readonly AppServiceConnection _connection;
-        AutoResetEvent appServiceExit;
+        private readonly AppServiceConnection _connection;        
 
         public SystemChecker()
         {
             _connection = new AppServiceConnection();
-            appServiceExit = new AutoResetEvent(false);
             _connection.AppServiceName = "CommunicationService";
             _connection.PackageFamilyName = Windows.ApplicationModel.Package.Current.Id.FamilyName;
             _connection.RequestReceived += RequestReceived;
-            _connection.ServiceClosed += Connection_ServiceClosed;
         }
 
         public void Run()
@@ -58,10 +55,6 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                 {
                     case AppServiceConnectionStatus.Success:
                         Console.WriteLine("Connection established - waiting for requests");
-                        //if the connection is successful, we communicate to the UWP app that the channel has been established
-                        ValueSet initialStatus = new ValueSet();
-                        initialStatus.Add("Status", "Ready");
-                        await _connection.SendMessageAsync(initialStatus);
                         break;
                     case AppServiceConnectionStatus.AppNotInstalled:
                         Console.WriteLine("The app AppServicesProvider is not installed.");

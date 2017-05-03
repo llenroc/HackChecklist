@@ -18,12 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		makeappx.bat = makeappx.bat
 		README.md = README.md
-		remoteConfiguration.json = remoteConfiguration.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C1C004F-83F0-4530-B8F1-0992910049E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.HackChecklist.BackgroundProcess", "src\Microsoft.HackChecklist.BackgroundProcess\Microsoft.HackChecklist.BackgroundProcess.csproj", "{5AC32AC8-7743-4AC7-B574-AFA1534FE351}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.HackChecklist.BackgroundTask", "src\Microsoft.HackChecklist.BackgroundTask\Microsoft.HackChecklist.BackgroundTask.csproj", "{4525EE26-B2D5-4949-B79C-0B33D491D1CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +106,22 @@ Global
 		{5AC32AC8-7743-4AC7-B574-AFA1534FE351}.Release|x64.Build.0 = Release|x64
 		{5AC32AC8-7743-4AC7-B574-AFA1534FE351}.Release|x86.ActiveCfg = Release|x86
 		{5AC32AC8-7743-4AC7-B574-AFA1534FE351}.Release|x86.Build.0 = Release|x86
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|ARM.Build.0 = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|x64.Build.0 = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +131,6 @@ Global
 		{F841BE3A-B482-4D9C-836E-28665CBFA8BC} = {1C1C004F-83F0-4530-B8F1-0992910049E1}
 		{7F5A7169-F13A-48EA-851A-959C0F4E7426} = {1C1C004F-83F0-4530-B8F1-0992910049E1}
 		{5AC32AC8-7743-4AC7-B574-AFA1534FE351} = {1C1C004F-83F0-4530-B8F1-0992910049E1}
+		{4525EE26-B2D5-4949-B79C-0B33D491D1CA} = {1C1C004F-83F0-4530-B8F1-0992910049E1}
 	EndGlobalSection
 EndGlobal
