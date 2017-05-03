@@ -9,7 +9,6 @@
 //
 //*********************************************************
 
-using System.Threading.Tasks;
 using Microsoft.HackChecklist.BackgroundProcess.Extensions;
 using Microsoft.HackChecklist.Models;
 using Microsoft.HackChecklist.Models.Consts;

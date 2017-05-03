@@ -31,29 +31,16 @@ namespace Microsoft.HackChecklist.Services
 
         public string Serialize<T>(T data)
         {
-            try
-            {
-                if (data == null) return string.Empty;
-
-                return JsonConvert.SerializeObject(data);
-            }
-            catch
-            {
-                return string.Empty;
-            }
+            return data == null 
+                ? string.Empty 
+                : JsonConvert.SerializeObject(data);
         }
 
         public T Deserialize<T>(string strData)
         {
-            try
-            {
-                return string.IsNullOrWhiteSpace(strData) ? default(T) 
-                    : JsonConvert.DeserializeObject<T>(strData, new StringEnumConverter());
-            }
-            catch (Exception)
-            {
-                return default(T);
-            }
+            return string.IsNullOrWhiteSpace(strData)
+                ? default(T)
+                : JsonConvert.DeserializeObject<T>(strData, new StringEnumConverter());
         }        
     }
 }
