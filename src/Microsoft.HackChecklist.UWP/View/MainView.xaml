@@ -31,7 +31,7 @@
         <Image Source="ms-appx:///Assets/clouds.png" VerticalAlignment="Top" Width="960" Stretch="Uniform"/>
 
         <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="670" Width="960" Background="White"
-            Visibility="{Binding GoChecking,Converter={StaticResource BoolToVisibilityConverter}}" >
+            Visibility="{Binding IsShownChecklist,Converter={StaticResource BoolToVisibilityConverter}}" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="*"/>
@@ -39,7 +39,8 @@
 
             <StackPanel Grid.Row="0" Orientation="Vertical">
                 <TextBlock Text="{Binding MessageChecking}" Style="{StaticResource TitleLoadingStyle}"/>
-                <TextBlock Text="{Binding MessageChecked}" Style="{StaticResource SubTitleLoadingStyle}"/>
+                <TextBlock Text="{Binding MessageChecked}" Style="{StaticResource SubTitleLoadingStyle}"
+                           Foreground="{Binding MessageChecked, Converter={StaticResource StringToResourceConverter}}"/>
             </StackPanel>
             <ListView Grid.Row="1" ItemTemplate="{StaticResource Software}" ItemContainerStyle="{StaticResource ListViewItemStyle}"
                       ItemsSource="{Binding Requirements}">

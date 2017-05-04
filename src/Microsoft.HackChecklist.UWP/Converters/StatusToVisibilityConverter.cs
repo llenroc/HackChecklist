@@ -9,28 +9,37 @@
 //
 //*********************************************************
 
-using System;
-using Windows.UI.Xaml.Data;
 using Microsoft.HackChecklist.Models.Enums;
+using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 
 namespace Microsoft.HackChecklist.UWP.Converters
 {
-    public class StatusImageConverter : IValueConverter
+    public class StatusToVisibilityConverter : IValueConverter
     {
-        private const string RootPath = "ms-appx:///Assets/";
+        public bool Inverse { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            var visibility = Visibility.Visible;
             if (value is ResponseStatus)
             {
-                return $"{RootPath}{(ResponseStatus)value}.png";
+                visibility = (ResponseStatus)value != ResponseStatus.Processing
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
             }
-            return $"{RootPath}{ResponseStatus.None}.png";
+            return Inverse ? Invert(visibility) : visibility;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
+        }
+
+        private Visibility Invert(Visibility visibility)
+        {
+            return visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }
