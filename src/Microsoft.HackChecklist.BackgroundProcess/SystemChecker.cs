@@ -170,6 +170,9 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                     checkResult = string.CompareOrdinal(registryValue, software.RegistryExpectedValue) >= 0;
                     Console.WriteLine($" -----> {registryValue}");
                     break;
+                case CheckType.AzureCliInstalled:
+                    checkResult = AzureCliChecker.IsInstalled();
+                    break;
             }
             Console.WriteLine($" -----> Passed: {checkResult}");
             return checkResult;
