@@ -19,16 +19,19 @@
         <ResourceDictionary Source="/Themes/Colors.xaml"/>
         <ResourceDictionary Source="/Themes/Converters.xaml"/>
         <ResourceDictionary Source="/Themes/FontSizes.xaml"/>
+        <ResourceDictionary Source="/Themes/Fonts.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 
     <Style x:Key="TitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource  SegoeLight}"/>
         <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeMoreLarge}"/>
         <Setter Property="Foreground" Value="{StaticResource PrimaryColorBrush}"/>
     </Style>
 
     <Style x:Key="SubTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeLight}"/>
         <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeSemiLarge}"/>
         <Setter Property="Foreground" Value="{StaticResource SecondaryColorBrush}"/>
@@ -36,6 +39,7 @@
     </Style>
 
     <Style x:Key="TitleLoadingStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeLight}"/>
         <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -48,12 +52,8 @@
         <Setter Property="Foreground" Value="{StaticResource SecondaryColorBrush}"/>
     </Style>
 
-    <Style x:Key="TermsTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource SubTitleTextBlockStyle}">
-        <Setter Property="FontSize" Value="{StaticResource FontSizeExtraSmall}"/>
-    </Style>
-
     <Style x:Key="TitleCheckingTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontFamily" Value="{StaticResource SegoeRegular}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraSmall}"/>
         <Setter Property="Padding" Value="22,0,10,0"/>
         <Setter Property="Foreground" Value="Black"/>
@@ -61,19 +61,23 @@
     </Style>
 
     <Style x:Key="SubTitleCheckingTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleCheckingTextBlockStyle}">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeLight}"/>
+        <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraMicro}"/>
         <Setter Property="Foreground" Value="{StaticResource SecondaryColorBrush}"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="FontWeight" Value="Light"/>
     </Style>
 
     <Style x:Key="SubTitleOptionalCheckingTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleCheckingTextBlockStyle}">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeLight}"/>
+        <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeMicro}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="5,0"/>
     </Style>
 
     <Style x:Key="CheckRegistryButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeRegular}"/>
         <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -159,8 +163,10 @@
     </Style>
 
     <Style x:Key="PrivacyStyle" TargetType="HyperlinkButton">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeLight}"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeExtraSmall}"/>
         <Setter Property="Foreground" Value="{StaticResource SecondaryLightColorBrush}"/>
-        <Setter Property="Style" Value="{StaticResource TermsTextBlockStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate  TargetType="HyperlinkButton">
@@ -203,6 +209,7 @@
     </Style>
 
     <Style x:Key="ResponseHyperlinkButtonStyle" TargetType="HyperlinkButton">
+        <Setter Property="FontFamily" Value="{StaticResource SegoeRegular}"/>
         <Setter Property="Margin" Value="0,0,40,0"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Width" Value="100"/>
@@ -214,7 +221,6 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="8,2,8,4"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="UseSystemFocusVisuals" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
