@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Contracts\IAnalyticsService.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\IndentToLeftMarginConverter.cs" />
     <Compile Include="Converters\StatusToImageConverter.cs" />
     <Compile Include="Converters\StatusToResourceConverter.cs" />
     <Compile Include="Converters\StatusToVisibilityConverter.cs" />

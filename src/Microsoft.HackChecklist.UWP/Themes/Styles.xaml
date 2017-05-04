@@ -238,8 +238,8 @@
     </Style>
 
     <DataTemplate x:Key="Software">
-        <Grid>
-            <Grid VerticalAlignment="Top" Height="38" Width="650">
+        <Grid Width="650">
+            <Grid VerticalAlignment="Top" Height="38" Margin="{Binding IndentationLevel, Converter={StaticResource IndentToLeftMarginConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -271,14 +271,7 @@
                 </HyperlinkButton.ContentTemplate>
               </HyperlinkButton>
               <Border Grid.RowSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
-            </Grid>
-            <ListView ItemsSource="{Binding Modules}" ItemTemplate="{StaticResource Modules}" ItemContainerStyle="{StaticResource ListViewItemStyle}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,45,0,0"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
+            </Grid>            
         </Grid>
     </DataTemplate>
 

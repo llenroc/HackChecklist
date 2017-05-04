@@ -129,10 +129,24 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             foreach (var requirement in configuration.Requirements)
             {
-                Requirements.Add(new RequirementViewModel(requirement));                
+                AddRequirement(requirement, 0);
             }
 
             _analyticsService.TrackScreen(AnalyticsConfiguration.MainViewScreenName);
+        }
+		
+		private void AddRequirement(Requirement requirement, int indentation)
+        {
+            if (requirement == null) return;
+
+            Requirements.Add(new RequirementViewModel(requirement, indentation));
+            if (requirement.Modules?.Any() ?? false)
+            {
+                foreach (var module in requirement.Modules)
+                {
+                    AddRequirement(module, indentation+1);
+                }
+            }
         }
 
         private bool CheckRequirementsCan()
@@ -167,6 +181,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             await App.Connection.SendMessageAsync(valueSet);
             IsChecking = false;
         }
+		
         private async Task LaunchBackgroundProcess()
         {
             try
@@ -197,9 +212,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 AnalyticsConfiguration.CheckCategory,
                 AnalyticsConfiguration.CheckRequirementAction,
                 requirement.Name,
-                passed ? 1 : 0);
-
-            requirement.Modules?.ToList().ForEach(async x => await CheckRequirementRecursive(x));
+                passed ? 1 : 0);            
         }
 
         private void ChangeStatus(bool passed, RequirementViewModel requirement)
