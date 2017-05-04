@@ -97,8 +97,10 @@
     </Compile>
     <Compile Include="Contracts\IAnalyticsService.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\ActivateStatusToBooleanConverter.cs" />
-    <Compile Include="Converters\StatusImageConverter.cs" />
+    <Compile Include="Converters\StatusToImageConverter.cs" />
+    <Compile Include="Converters\StatusToResourceConverter.cs" />
+    <Compile Include="Converters\StatusToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToResourceConverter.cs" />
     <Compile Include="IoCConfiguration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\AnalyticsConfiguration.cs" />
@@ -204,6 +206,9 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -17,7 +17,9 @@
     xmlns:converters="using:Microsoft.HackChecklist.UWP.Converters">
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    <converters:StatusImageConverter x:Key="StatusImageConverter"/>
-    <converters:ActivateStatusToBooleanConverter x:Key="ActivateStatusToBooleanConverter"/>
+    <converters:StatusToImageConverter x:Key="StatusToImageConverter"/>
+    <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+    <converters:StatusToResourceConverter x:Key="StatusToResourceConverter"/>
+    <converters:StringToResourceConverter x:Key="StringToResourceConverter"/>
 
 </ResourceDictionary>
