@@ -159,6 +159,9 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                         RegistryChecker.GetLocalRegistryValue(software.InstallationRegistryKey, software.InstallationRegistryValue),
                         software.InstallationRegistryExpectedValue) >= 0;
                     break;
+                case CheckType.AzureCliInstalled:
+                    checkResult = AzureCliChecker.IsInstalled();
+                    break;
             }
 
             return checkResult;

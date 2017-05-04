@@ -114,7 +114,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         public async void Init()
         {
             // TODO: Recover the remote configuration
-            string strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+            var strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
 
             Configuration configuration;
             try
@@ -129,10 +129,24 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             foreach (var requirement in configuration.Requirements)
             {
-                Requirements.Add(new RequirementViewModel(requirement));                
+                AddRequirement(requirement, 0);
             }
 
             _analyticsService.TrackScreen(AnalyticsConfiguration.MainViewScreenName);
+        }
+		
+		private void AddRequirement(Requirement requirement, int indentation)
+        {
+            if (requirement == null) return;
+
+            Requirements.Add(new RequirementViewModel(requirement, indentation));
+            if (requirement.Modules?.Any() ?? false)
+            {
+                foreach (var module in requirement.Modules)
+                {
+                    AddRequirement(module, indentation+1);
+                }
+            }
         }
 
         private bool CheckRequirementsCan()
@@ -162,12 +176,10 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             }
 
             ShowMessageResponse();
-
-            // TODO: need to terminate the BackGround process!
-            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.Terminate, true } };
-            await App.Connection.SendMessageAsync(valueSet);
+            
             IsChecking = false;
         }
+
         private async Task LaunchBackgroundProcess()
         {
             try
@@ -183,7 +195,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         private async Task CheckRequirementRecursive(RequirementViewModel requirement)
         {
-            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
+            var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
 
             requirement.Status = ResponseStatus.Processing;
             requirement.IsLoading = true;
@@ -198,9 +210,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 AnalyticsConfiguration.CheckCategory,
                 AnalyticsConfiguration.CheckRequirementAction,
                 requirement.Name,
-                passed ? 1 : 0);
-
-            requirement.Modules?.ToList().ForEach(async x => await CheckRequirementRecursive(x));
+                passed ? 1 : 0);            
         }
 
         private void ChangeStatus(bool passed, RequirementViewModel requirement)
@@ -226,7 +236,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 if (!string.IsNullOrEmpty(additionalInformation))
                 {
                     requirement.NeedUpdateInformation =
-                        String.Format(_resourceLoader.GetString("NeedUpdate"), additionalInformation);
+                        string.Format(_resourceLoader.GetString("NeedUpdate"), additionalInformation);
                 }
             }
             requirement.IsLoading = false;
