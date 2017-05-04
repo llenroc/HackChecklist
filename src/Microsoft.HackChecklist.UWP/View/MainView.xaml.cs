@@ -17,7 +17,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.System.Profile;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -31,12 +30,12 @@ namespace Microsoft.HackChecklist.UWP.View
             InitializeComponent();
             IoCConfiguration.Configure();
             DataContext = IoCConfiguration.GetType<MainViewModel>();
-            (Application.Current as App).StatusUpdated += MainPage_StatusUpdated;
+            ((App)Application.Current).StatusUpdated += MainPage_StatusUpdated;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e) 
         {
-            progressBar.IsActive = true;
+            ProgressBar.IsActive = true;
             //we check if the app is running on the desktop: only if that's the case, we leverage the Desktop Bridge specific features
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
             {
@@ -58,7 +57,7 @@ namespace Microsoft.HackChecklist.UWP.View
             //the Win32 app has initialized the channel with the App Service, so we hide the ProgressRing
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                progressBar.IsActive = false;
+                ProgressBar.IsActive = false;
             });
         }
 

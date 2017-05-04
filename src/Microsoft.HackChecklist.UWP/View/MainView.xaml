@@ -53,5 +53,7 @@
             <Button Grid.Row="0" Grid.RowSpan="2" x:Uid="Restart" Style="{StaticResource RestartButtonStyle}"
                     Command="{Binding CheckRequirementsCommand}"/>
         </Grid>
+        <ProgressRing x:Name="ProgressBar" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Width="50" Height="50" />
     </Grid>
 </Page>
