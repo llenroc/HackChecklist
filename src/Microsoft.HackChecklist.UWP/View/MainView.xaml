@@ -25,7 +25,7 @@
             <TextBlock x:Uid="ToolHelp" Style="{StaticResource SubTitleTextBlockStyle}"/>
             <Button x:Uid="CheckNow" Style="{StaticResource CheckRegistryButtonStyle}" 
                     Command="{Binding CheckRequirementsCommand}"/>
-            <TextBlock x:Uid="Terms" Style="{StaticResource TermsTextBlockStyle}"/>
+            <HyperlinkButton x:Uid="Privacy" Style="{StaticResource PrivacyStyle}"/>
         </StackPanel>
         <Image Source="ms-appx:///Assets/Buildings.png" VerticalAlignment="Bottom" Width="960" Stretch="Uniform"/>
         <Image Source="ms-appx:///Assets/clouds.png" VerticalAlignment="Top" Width="960" Stretch="Uniform"/>
