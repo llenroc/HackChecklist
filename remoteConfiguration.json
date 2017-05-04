@@ -96,11 +96,7 @@
     {
       "name": "Azure CLI 2.0",
       "additionalInformation": "Version 2.0 or higher",
-      "checkType": "IncludedInRegistry",
-      "registryHive": "LocalMachine",
-      "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-      "registryValue": "DisplayName",
-      "registryExpectedValue": "Azure CLI 2.0",
+      "checkType": "AzureCliInstalled",
       "isOptional": "false",
       "installationNotes": "https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
     }

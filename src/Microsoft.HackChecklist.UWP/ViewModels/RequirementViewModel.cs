@@ -22,6 +22,9 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
     {
         private Requirement _requirement;
         private ResponseStatus _status = ResponseStatus.None;
+        private bool _isLoading;
+        private bool _isUpdateFailed;
+        private string _needUpdateInformation;
 
         public RequirementViewModel(Requirement requirement)
         {
@@ -108,6 +111,36 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 {
                     Modules = new ObservableCollection<RequirementViewModel>(_requirement.Modules.Select(x => new RequirementViewModel(x)));
                 }
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading; 
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        public bool IsUpdateFailed
+        {
+            get => _isUpdateFailed;
+            set
+            {
+                _isUpdateFailed = value;
+                OnPropertyChanged(nameof(IsUpdateFailed));
+            }
+        }
+
+        public string NeedUpdateInformation
+        {
+            get => _needUpdateInformation;
+            set
+            {
+                _needUpdateInformation = value;
+                OnPropertyChanged(nameof(NeedUpdateInformation));
             }
         }
     }

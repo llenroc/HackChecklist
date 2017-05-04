@@ -10,16 +10,22 @@
 //*********************************************************
 
 using System;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Microsoft.HackChecklist.Models.Enums;
+using Windows.UI.Xaml.Media;
 
 namespace Microsoft.HackChecklist.UWP.Converters
 {
-    public class ActivateStatusToBooleanConverter : IValueConverter
+    class StringToResourceConverter : IValueConverter
     {
+        private readonly ResourceLoader _resourceLoader = new ResourceLoader();
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value is ResponseStatus && (ResponseStatus)value == ResponseStatus.Processing;
+            return value is String && (String) value == _resourceLoader.GetString("SubTitleCheckSucces")
+                ? Application.Current.Resources["SuccessColorBrush"] as SolidColorBrush
+                : Application.Current.Resources["FailedColorBrush"] as SolidColorBrush;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

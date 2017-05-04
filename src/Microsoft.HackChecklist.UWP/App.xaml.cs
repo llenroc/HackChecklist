@@ -20,9 +20,11 @@ using Windows.UI.Xaml.Navigation;
 namespace Microsoft.HackChecklist.UWP
 {
     sealed partial class App : Application
-    {        
+    {
+        public event EventHandler<string> StatusUpdated;
         public static AppServiceConnection Connection;
-        BackgroundTaskDeferral _appServiceDeferral;
+
+        private BackgroundTaskDeferral _appServiceDeferral;
 
         public App()
         {
@@ -41,6 +43,17 @@ namespace Microsoft.HackChecklist.UWP
             if (details != null)
             {
                 Connection = details.AppServiceConnection;
+            }
+            Connection.RequestReceived += ConnectionOnRequestReceived;
+        }
+
+        private void ConnectionOnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            //the Win32 app has sent us a message. If it's the message to confirm that the channel has been open, we raise the StatusUpdated event
+            if (args.Request.Message.ContainsKey("Status"))
+            {
+                var currentStatus = args.Request.Message["Status"].ToString();
+                StatusUpdated?.Invoke(this, currentStatus);
             }
         }
 
@@ -77,7 +90,7 @@ namespace Microsoft.HackChecklist.UWP
             Window.Current.Activate();
         }
 
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

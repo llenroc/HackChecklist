@@ -42,6 +42,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         private string _message;
         private bool _isChecking;
+        private bool _isShownToChecklist = false;
         private string _messageChecking;
         private string _messageChecked;
 
@@ -75,6 +76,16 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             set
             {
                 _messageChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsShownChecklist
+        {
+            get => _isShownToChecklist;
+            set
+            {
+                _isShownToChecklist = value;
                 OnPropertyChanged();
             }
         }
@@ -115,7 +126,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 Console.WriteLine(e);
                 throw;
             }
-            CheckRequirementsAction();
+
             foreach (var requirement in configuration.Requirements)
             {
                 Requirements.Add(new RequirementViewModel(requirement));                
@@ -124,11 +135,19 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             _analyticsService.TrackScreen(AnalyticsConfiguration.MainViewScreenName);
         }
 
+        private bool CheckRequirementsCan()
+        {
+            return !IsChecking;
+        }
+
         private async void CheckRequirementsAction()
         {
-            _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.CheckAllRequirementsAction, null, 0);
+            IsShownChecklist = true;
             IsChecking = true;
             MessageChecking = _resourceLoader.GetString("TitleChecking");
+            MessageChecked = string.Empty;
+
+            _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.CheckAllRequirementsAction, null, 0);
 
             await LaunchBackgroundProcess();
 
@@ -136,46 +155,19 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             Message = "running";
 
+
             foreach (var requirement in Requirements)
             {
                 await CheckRequirementRecursive(requirement);
             }
 
-            MessageChecking = _resourceLoader.GetString("TitleCheckCompleted");
-            MessageChecked = Requirements.Any(requirement => !requirement.IsOptional && requirement.Status != ResponseStatus.Success)
-                ? _resourceLoader.GetString("SubTitleCheckFile")
-                : _resourceLoader.GetString("SubTitleCheckSucces");
+            ShowMessageResponse();
 
             // TODO: need to terminate the BackGround process!
             ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.Terminate, true } };
             await App.Connection.SendMessageAsync(valueSet);
             IsChecking = false;
         }
-
-        private async Task CheckRequirementRecursive(RequirementViewModel requirement)
-        {
-            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
-            requirement.Status = ResponseStatus.Processing;
-
-            var response = await App.Connection.SendMessageAsync(valueSet);
-            var passed = (response?.Message.Keys.Contains(requirement.Name) ?? false) && (bool)response.Message[requirement.Name];
-
-            requirement.Status = passed ? ResponseStatus.Success : ResponseStatus.Failed;
-
-            _analyticsService.TrackEvent(
-                AnalyticsConfiguration.CheckCategory,
-                AnalyticsConfiguration.CheckRequirementAction,
-                requirement.Name,
-                passed ? 1 : 0);
-
-            requirement.Modules?.ToList().ForEach(async x => await CheckRequirementRecursive(x));
-        }
-
-        private bool CheckRequirementsCan()
-        {
-            return !IsChecking;
-        }
-
         private async Task LaunchBackgroundProcess()
         {
             try
@@ -187,6 +179,65 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             {
                 Debug.WriteLine(exception.Message);
             }
+        }
+
+        private async Task CheckRequirementRecursive(RequirementViewModel requirement)
+        {
+            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
+
+            requirement.Status = ResponseStatus.Processing;
+            requirement.IsLoading = true;
+            requirement.NeedUpdateInformation = requirement.AdditionalInformation;
+
+            var response = await App.Connection.SendMessageAsync(valueSet);
+            var passed = (response?.Message.Keys.Contains(requirement.Name) ?? false) && (bool)response.Message[requirement.Name];
+
+            ChangeStatus(passed, requirement);
+
+            _analyticsService.TrackEvent(
+                AnalyticsConfiguration.CheckCategory,
+                AnalyticsConfiguration.CheckRequirementAction,
+                requirement.Name,
+                passed ? 1 : 0);
+
+            requirement.Modules?.ToList().ForEach(async x => await CheckRequirementRecursive(x));
+        }
+
+        private void ChangeStatus(bool passed, RequirementViewModel requirement)
+        {
+            if (passed)
+            {
+                requirement.Status = ResponseStatus.Success;
+            }
+            else
+            {
+                if (requirement.IsOptional)
+                {
+                    requirement.Status = ResponseStatus.None;
+                }
+                else
+                {
+                    requirement.Status = ResponseStatus.Failed;
+                }
+
+                requirement.IsUpdateFailed = true;
+
+                var additionalInformation = requirement.AdditionalInformation;
+                if (!string.IsNullOrEmpty(additionalInformation))
+                {
+                    requirement.NeedUpdateInformation =
+                        String.Format(_resourceLoader.GetString("NeedUpdate"), additionalInformation);
+                }
+            }
+            requirement.IsLoading = false;
+        }
+
+        private void ShowMessageResponse()
+        {
+            MessageChecking = _resourceLoader.GetString("TitleCheckCompleted");
+            MessageChecked = Requirements.Any(requirement => !requirement.IsOptional && requirement.Status != ResponseStatus.Success)
+                ? _resourceLoader.GetString("SubTitleCheckFile")
+                : _resourceLoader.GetString("SubTitleCheckSucces");
         }
     }
 }

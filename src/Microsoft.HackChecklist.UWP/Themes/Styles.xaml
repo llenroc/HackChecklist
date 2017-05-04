@@ -45,6 +45,7 @@
 
     <Style x:Key="SubTitleLoadingStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleLoadingStyle}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
     </Style>
 
     <Style x:Key="TermsTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource SubTitleTextBlockStyle}">
@@ -157,6 +158,78 @@
         <Setter Property="Margin" Value="20,0,0,0"/>
     </Style>
 
+  <Style x:Key="ResponseHyperlinkButtonStyle" TargetType="HyperlinkButton">
+    <Setter Property="Margin" Value="0,0,40,0"/>
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+    <Setter Property="Width" Value="100"/>
+    <Setter Property="Height" Value="24"/>
+    <Setter Property="FontSize" Value="{StaticResource FontSizeExtraMicro}"/>
+    <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="8,2,8,4"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="FontWeight" Value="Normal"/>
+    <Setter Property="UseSystemFocusVisuals" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="HyperlinkButton">
+          <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                  <Storyboard>
+                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="PointerOver">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PrimaryLightColorBrush}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PrimaryLightColorBrush}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Disabled">
+                  <Storyboard>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundDisabled}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushDisabled}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                      <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundDisabled}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
     <Style x:Key="CheckingBorderStyle" TargetType="Border">
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="BorderBrush" Value="{StaticResource SecondaryLightColorBrush}"/>
@@ -178,12 +251,26 @@
                         <TextBlock  Text="Optional" Style="{StaticResource SubTitleOptionalCheckingTextBlockStyle}"/>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="1" Text="{Binding AdditionalInformation}" Style="{StaticResource SubTitleCheckingTextBlockStyle}"/>
+                <TextBlock Grid.Row="1" Text="{Binding NeedUpdateInformation}" Style="{StaticResource SubTitleCheckingTextBlockStyle}" 
+                           Foreground="{Binding Status, Converter={StaticResource StatusToResourceConverter}}"/>
                 <ProgressRing Grid.RowSpan="2" Foreground="{StaticResource SecondaryLightColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" Width="24" Margin="0,0,8,0"
-                              IsActive="{Binding Status, Converter={StaticResource ActivateStatusToBooleanConverter}}"/>
-                <Image Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,0,8,0"
-                       Source="{Binding Status, Converter={StaticResource StatusImageConverter}}"/>
-                <Border Grid.RowSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
+                              IsActive="{Binding ActivateLoading}"/>
+                <Image Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,-3,8,0"
+                       Source="{Binding Status, Converter={StaticResource StatusToImageConverter}}" 
+                       Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"/>
+              <HyperlinkButton
+                        x:Uid="GetUpdates"
+                        Grid.RowSpan="2"                        
+                        NavigateUri="{Binding InstallationNotes}"
+                        Style="{StaticResource ResponseHyperlinkButtonStyle}"
+                        Visibility="{Binding IsUpdateFailed, Converter={StaticResource BoolToVisibilityConverter}}">
+                <HyperlinkButton.ContentTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                  </DataTemplate>
+                </HyperlinkButton.ContentTemplate>
+              </HyperlinkButton>
+              <Border Grid.RowSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
             </Grid>
             <ListView ItemsSource="{Binding Modules}" ItemTemplate="{StaticResource Modules}" ItemContainerStyle="{StaticResource ListViewItemStyle}">
                 <ListView.ItemsPanel>
@@ -208,23 +295,41 @@
                     <TextBlock  Text="Optional" Style="{StaticResource SubTitleOptionalCheckingTextBlockStyle}"/>
                 </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Row="1" Text="{Binding InstallationRegistryValue}" Style="{StaticResource SubTitleCheckingTextBlockStyle}"/>
+            <TextBlock Grid.Row="1" Text="{Binding NeedUpdateInformation}" Style="{StaticResource SubTitleCheckingTextBlockStyle}" 
+                       Foreground="{Binding Status, Converter={StaticResource StatusToResourceConverter}}"/>
             <ProgressRing Grid.RowSpan="2" Foreground="{StaticResource SecondaryLightColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" Width="24" Margin="0,0,8,0"
-                              IsActive="{Binding Status, Converter={StaticResource ActivateStatusToBooleanConverter}}"/>
-            <Image Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,0,8,0"
-                       Source="{Binding Status, Converter={StaticResource StatusImageConverter}}"/>
+                          IsActive="{Binding ActivateLoading}"/>
+            <Image Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,-3,8,0"
+                       Source="{Binding Status, Converter={StaticResource StatusToImageConverter}}"
+                       Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"/>
+          <HyperlinkButton
+                       x:Uid="GetUpdates"
+                       Grid.RowSpan="2"
+                       NavigateUri="{Binding InstallationNotes}"
+                       Style="{StaticResource ResponseHyperlinkButtonStyle}"
+                       Visibility="{Binding IsUpdateFailed, Converter={StaticResource BoolToVisibilityConverter}}">
+            <HyperlinkButton.ContentTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                  </DataTemplate>
+                </HyperlinkButton.ContentTemplate>
+          </HyperlinkButton>         
             <Border Grid.RowSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
         </Grid>
     </DataTemplate>
 
     <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <ContentPresenter/>
+                    <Grid Background="{TemplateBinding Background}">
+                        <ContentPresenter Background="{TemplateBinding Background}"/>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>  
 
 </ResourceDictionary>
