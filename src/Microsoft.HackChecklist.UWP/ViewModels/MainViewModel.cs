@@ -114,7 +114,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         public async void Init()
         {
             // TODO: Recover the remote configuration
-            string strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+            var strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
 
             Configuration configuration;
             try
@@ -169,19 +169,17 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             Message = "running";
 
+
             foreach (var requirement in Requirements)
             {
                 await CheckRequirementRecursive(requirement);
             }
 
             ShowMessageResponse();
-
-            // TODO: need to terminate the BackGround process!
-            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.Terminate, true } };
-            await App.Connection.SendMessageAsync(valueSet);
+            
             IsChecking = false;
         }
-		
+
         private async Task LaunchBackgroundProcess()
         {
             try
@@ -197,7 +195,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         private async Task CheckRequirementRecursive(RequirementViewModel requirement)
         {
-            ValueSet valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
+            var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
 
             requirement.Status = ResponseStatus.Processing;
             requirement.IsLoading = true;
@@ -238,7 +236,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 if (!string.IsNullOrEmpty(additionalInformation))
                 {
                     requirement.NeedUpdateInformation =
-                        String.Format(_resourceLoader.GetString("NeedUpdate"), additionalInformation);
+                        string.Format(_resourceLoader.GetString("NeedUpdate"), additionalInformation);
                 }
             }
             requirement.IsLoading = false;

@@ -25,7 +25,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         private bool _isLoading;
         private bool _isUpdateFailed;
         private string _needUpdateInformation;
-		private int _indentationLevel;
+        private int _indentationLevel;
 
         public RequirementViewModel(Requirement requirement, int indentation)
         {
@@ -93,7 +93,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             }
         }
 
-        public ResponseStatus Status 
+        public ResponseStatus Status
         {
             get => _status;
             set
@@ -122,14 +122,14 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 if (_requirement.Modules != null)
                 {
                     Modules = new ObservableCollection<RequirementViewModel>(
-                        _requirement.Modules.Select(requirement => new RequirementViewModel(requirement, _indentationLevel+1)));
+                        _requirement.Modules.Select(requirement => new RequirementViewModel(requirement, _indentationLevel + 1)));
                 }
             }
         }
 
         public bool IsLoading
         {
-            get => _isLoading; 
+            get => _isLoading;
             set
             {
                 _isLoading = value;

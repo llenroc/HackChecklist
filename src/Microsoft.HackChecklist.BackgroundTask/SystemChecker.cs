@@ -9,12 +9,12 @@
 //
 //*********************************************************
 
+using System.Threading.Tasks;
 using Microsoft.HackChecklist.BackgroundProcess.Extensions;
 using Microsoft.HackChecklist.Models;
 using Microsoft.HackChecklist.Models.Consts;
 using Microsoft.HackChecklist.Models.Enums;
 using Microsoft.HackChecklist.Services;
-using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading;
@@ -48,13 +48,16 @@ namespace Microsoft.HackChecklist.BackgroundProcess
         {
             try
             {
-                Console.WriteLine("I am the thread");
+                //Console.WriteLine("I am the thread");
                 var status = await _connection.OpenAsync();
-                Console.WriteLine($"I am listening with status: {status}");
+                //Console.WriteLine($"I am listening with status: {status}");
                 switch (status)
                 {
                     case AppServiceConnectionStatus.Success:
-                        Console.WriteLine("Connection established - waiting for requests");
+                        //Console.WriteLine("Connection established - waiting for requests");
+                        ValueSet initialStatus = new ValueSet();
+                        initialStatus.Add("Status", "Ready");
+                        await _connection.SendMessageAsync(initialStatus);
                         break;
                     case AppServiceConnectionStatus.AppNotInstalled:
                         Console.WriteLine("The app AppServicesProvider is not installed.");
@@ -118,6 +121,7 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                 }
                 Console.WriteLine($"Responsing valueSet: {valueSet}");
                 args.Request.SendResponseAsync(valueSet).Completed += delegate { };
+                //Console.WriteLine($"Responsed with {software?.Status}");
             }
             else if (key == BackgroundProcessCommand.RunChecks)
             {
@@ -131,57 +135,36 @@ namespace Microsoft.HackChecklist.BackgroundProcess
 
         private bool CheckRequirement(Software software)
         {
-            var registryValue = string.Empty;
             var checkResult = false;
-            Console.WriteLine($"Checking: {software.Name}");
             switch (software.CheckType)
             {
-                case CheckType.RegistryValue:
-                    registryValue = RegistryChecker.GetRegistryValue(
-                            ParseRegistryHive(software.RegistryHive),
-                            software.RegistryKey,
-                            software.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, software.RegistryExpectedValue) == 0;
-                    Console.WriteLine($" -----> {registryValue}");
+                case CheckType.RegistryValueCheck:
+                    checkResult = string.CompareOrdinal(
+                        RegistryChecker.GetLocalRegistryValue(software.InstallationRegistryKey, software.InstallationRegistryValue),
+                        software.InstallationRegistryExpectedValue) == 0;
                     break;
-                case CheckType.IncludedInRegistry:
-                    var registryValues = RegistryChecker.GetRegistryValues(
-                        ParseRegistryHive(software.RegistryHive),
-                        software.RegistryKey, 
-                        software.RegistryValue);
-                    checkResult = registryValues?.Any(value =>
-                        value.Contains(software.RegistryExpectedValue, StringComparison.InvariantCultureIgnoreCase)) ?? false;
-                    Console.WriteLine($" -----> {registryValues.Count()}");
+                case CheckType.IncludedInRegistryInstallationCheck:
+                    var installedSoftware = RegistryChecker.GetLocalRegistryValues(UninstallRegistrySubKey, UninstallRegistryKeyValue);
+                    checkResult = installedSoftware?.Any(program =>
+                        program.Contains(software.InstallationRegistryKey, StringComparison.InvariantCultureIgnoreCase)) ?? false;
                     break;
-                case CheckType.VisualStudioInstalled:
+                case CheckType.VisualStudioInstalledCheck:
                     checkResult = new VisualStudioChecker().IsVisualStudio2017Installed();
                     break;
-                case CheckType.VisualStudioWorkloadInstalled:
-                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(software.RegistryKey);
+                case CheckType.VisualStudioWorkloadInstalledCheck:
+                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(software.InstallationRegistryKey);
                     break;
-                case CheckType.MinimumVisualStudioWorkloadInstalled:
-                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(software.RegistryKey, software.RegistryExpectedValue);
-                    break;
-                case CheckType.MinimumRegistryValue:
-                    registryValue = RegistryChecker.GetRegistryValue(
-                            ParseRegistryHive(software.RegistryHive),
-                            software.RegistryKey,
-                            software.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, software.RegistryExpectedValue) >= 0;
-                    Console.WriteLine($" -----> {registryValue}");
+                case CheckType.MinimumRegistryValueCheck:
+                    checkResult = string.CompareOrdinal(
+                        RegistryChecker.GetLocalRegistryValue(software.InstallationRegistryKey, software.InstallationRegistryValue),
+                        software.InstallationRegistryExpectedValue) >= 0;
                     break;
                 case CheckType.AzureCliInstalled:
                     checkResult = AzureCliChecker.IsInstalled();
                     break;
             }
-            Console.WriteLine($" -----> Passed: {checkResult}");
-            return checkResult;
-        }
 
-        private RegistryHive ParseRegistryHive(string hive)
-        {
-            RegistryHive result = RegistryHive.LocalMachine;            
-            return Enum.TryParse(hive, out result) ? result : RegistryHive.LocalMachine;
+            return checkResult;
         }
     }
 }
