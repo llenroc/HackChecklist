@@ -114,8 +114,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             {
                 Console.WriteLine(e);
                 throw;
-            }
-            CheckRequirementsAction();
+            }            
             foreach (var requirement in configuration.Requirements)
             {
                 Requirements.Add(new RequirementViewModel(requirement));                

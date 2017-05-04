@@ -116,6 +116,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzureCliChecker.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="RegistryChecker.cs" />
     <Compile Include="SystemChecker.cs" />
