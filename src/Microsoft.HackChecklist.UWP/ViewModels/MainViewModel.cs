@@ -16,6 +16,7 @@ using Microsoft.HackChecklist.UWP.Contracts;
 using Microsoft.HackChecklist.UWP.Services;
 using Microsoft.HackChecklist.UWP.ViewModels.Base;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         private readonly IAppDataService _appDataService;
         private readonly IAnalyticsService _analyticsService;
         private readonly INetworkService _networkService;
+        private readonly INotificationService _notificationService;
 
         private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
@@ -48,12 +50,13 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         private string _messageChecked;
 
         public MainViewModel(IJsonSerializerService jsonSerializerService, IAppDataService appDataService, IAnalyticsService analyticsService,
-            INetworkService networkService)
+            INetworkService networkService, INotificationService notificationService)
         {
             _jsonSerializerService = jsonSerializerService;
             _appDataService = appDataService;
             _analyticsService = analyticsService;
             _networkService = networkService;
+            _notificationService = notificationService;
             Init();
         }
 
@@ -100,20 +103,11 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string Message
-        {
-            get => _message;
-            set
-            {
-                if (value == _message) return;
-                _message = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public async void Init()
-        {            
+        {
+            await _notificationService.NotificationsAsync(NotificationTags.NotTested);
+
             string strConfiguration;            
             try
             {
@@ -178,15 +172,13 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             if (App.Connection == null) return;
 
-            Message = "running";
-
-
             foreach (var requirement in Requirements)
             {
-                await CheckRequirementRecursive(requirement);
+                await CheckRequirement(requirement);
             }
 
             ShowMessageResponse();
+            UpdateNotificationTags();
             
             IsChecking = false;
         }
@@ -204,7 +196,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             }
         }
 
-        private async Task CheckRequirementRecursive(RequirementViewModel requirement)
+        private async Task CheckRequirement(RequirementViewModel requirement)
         {
             var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement.ModelObject) } };
 
@@ -259,6 +251,17 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             MessageChecked = Requirements.Any(requirement => !requirement.IsOptional && requirement.Status != ResponseStatus.Success)
                 ? _resourceLoader.GetString("SubTitleCheckFile")
                 : _resourceLoader.GetString("SubTitleCheckSucces");
+        }
+
+        private void UpdateNotificationTags()
+        {
+            var tag = Requirements.All(requirement => requirement.Status == ResponseStatus.Success)
+                ? NotificationTags.AllTestsPassed
+                : Requirements.Any(requirement => !requirement.IsOptional && requirement.Status != ResponseStatus.Success)
+                    ? NotificationTags.RequiredTestsFailed
+                    : NotificationTags.RequiredTestsPassed;
+
+            _notificationService.NotificationsAsync(tag);
         }
     }
 }

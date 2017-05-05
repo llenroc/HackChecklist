@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IAnalyticsService.cs" />
+    <Compile Include="Contracts\INotificationService.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\IndentToLeftMarginConverter.cs" />
     <Compile Include="Converters\StatusToImageConverter.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\AppDataService.cs" />
     <Compile Include="Contracts\IAppDataService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\NotificationTags.cs" />
     <Compile Include="ViewModels\RequirementViewModel.cs" />
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -199,6 +202,9 @@
     </PackageReference>
     <PackageReference Include="UWP.SDKforGoogleAnalytics.Managed">
       <Version>1.5.2</Version>
+    </PackageReference>
+    <PackageReference Include="WindowsAzure.Messaging.Managed">
+      <Version>0.1.7.9</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

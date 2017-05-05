@@ -29,6 +29,7 @@ namespace Microsoft.HackChecklist.UWP
             builder.RegisterType<AppDataService>().As<IAppDataService>().SingleInstance();
             builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
             builder.RegisterType<NetworkService>().As<INetworkService>().SingleInstance();
+            builder.RegisterType<NotificationService>().As<INotificationService>().SingleInstance();
 
             builder.RegisterType<MainViewModel>().SingleInstance();
 
