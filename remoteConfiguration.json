@@ -83,17 +83,6 @@
       "installationNotes": "https://www.microsoft.com/en-us/download/details.aspx?id=51657"
     },
     {
-      "name": "Visual Studio 2015 Tools for Azure",
-      "additionalInformation": "Software more info",
-      "checkType": "IncludedInRegistry",
-      "registryHive": "LocalMachine",
-      "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-      "registryValue": "DisplayName",
-      "registryExpectedValue": "Visual Studio 2015 Tools for Azure",
-      "isOptional": "false",
-      "installationNotes": "https://azure.microsoft.com/en-us/tools/"
-    },
-    {
       "name": "Azure CLI 2.0",
       "additionalInformation": "Version 2.0 or higher",
       "checkType": "AzureCliInstalled",
