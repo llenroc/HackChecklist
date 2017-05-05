@@ -23,6 +23,7 @@ namespace Microsoft.HackChecklist.BackgroundProcess
             process.StartInfo.FileName = "cmd.exe";
             process.StartInfo.Arguments = "/C " + command;
             process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
 
             process.StartInfo.RedirectStandardOutput = true;
             process.Start();
