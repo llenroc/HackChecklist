@@ -126,6 +126,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="Assets\Buildings.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
     <Content Include="Assets\Success.png" />
     <Content Include="Assets\clouds.png" />
     <Content Include="Assets\HackCheckerIcon-21x15.png" />
@@ -215,7 +216,9 @@
       <Name>Windows Desktop Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BackgroundProcess\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
