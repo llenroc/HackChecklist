@@ -20,10 +20,31 @@
     mc:Ignorable="d" HorizontalContentAlignment="Stretch">
 
     <Grid>
-        <Image Source="ms-appx:///Assets/Buildings.png" VerticalAlignment="Bottom" MaxHeight="200" Stretch="UniformToFill"/>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="Normal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="700"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="WelcomePanel.Margin" Value="300,160,0,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="WelcomePanel.Margin" Value="100,80,0,0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Image Source="ms-appx:///Assets/Buildings.png" VerticalAlignment="Bottom" MaxHeight="200" Stretch="Uniform"/>
         <Image Source="ms-appx:///Assets/clouds.png" VerticalAlignment="Top" Width="960" Stretch="Uniform"/>
 
-        <StackPanel Margin="300,160,0,0" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <StackPanel x:Name="WelcomePanel" Margin="300,160,0,0" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left">
             <TextBlock x:Uid="Welcome" Style="{StaticResource TitleTextBlockStyle}"/>
             <TextBlock x:Uid="ToolHelp" Style="{StaticResource SubTitleTextBlockStyle}"/>
             <Button x:Uid="CheckNow" Style="{StaticResource CheckRegistryButtonStyle}" 
@@ -31,29 +52,28 @@
             <HyperlinkButton x:Uid="Privacy" Style="{StaticResource PrivacyStyle}"/>
         </StackPanel>
 
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White"
-            Visibility="{Binding IsShownChecklist,Converter={StaticResource BoolToVisibilityConverter}}" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Auto" Background="White" 
+                      Visibility="{Binding IsShownChecklist,Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40">
 
-            <StackPanel Grid.Row="0" Orientation="Vertical">
-                <TextBlock Text="{Binding MessageChecking}" Style="{StaticResource TitleLoadingStyle}"/>
-                <TextBlock Text="{Binding MessageChecked}" Style="{StaticResource SubTitleLoadingStyle}"
+                <StackPanel Grid.Row="0" Orientation="Vertical">
+                    <TextBlock Text="{Binding MessageChecking}" Style="{StaticResource TitleLoadingStyle}"/>
+                    <TextBlock Text="{Binding MessageChecked}" Style="{StaticResource SubTitleLoadingStyle}"
                            Foreground="{Binding MessageChecked, Converter={StaticResource StringToResourceConverter}}"/>
-            </StackPanel>
-            <ListView Grid.Row="1" ItemTemplate="{StaticResource Software}" ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                </StackPanel>
+                <ItemsControl Grid.Row="1" ItemTemplate="{StaticResource Software}" 
                       ItemsSource="{Binding Requirements}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
-            <Button Grid.Row="0" Grid.RowSpan="2" x:Uid="Restart" Style="{StaticResource RestartButtonStyle}"
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <Button Grid.Row="2" x:Uid="Restart" Style="{StaticResource RestartButtonStyle}"
                     Command="{Binding CheckRequirementsCommand}"/>
-        </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        
         <ProgressRing x:Name="ProgressBar" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"
                       Width="50" Height="50" />
     </Grid>

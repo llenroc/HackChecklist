@@ -34,6 +34,7 @@ namespace Microsoft.HackChecklist.UWP
 
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.PreferredLaunchViewSize = new Size(960, 670);
+
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
@@ -92,6 +93,8 @@ namespace Microsoft.HackChecklist.UWP
             {
                 rootFrame.Navigate(typeof(View.MainView), e.Arguments);
             }
+
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(960, 670));
             Window.Current.Activate();
         }
 

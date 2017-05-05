@@ -16,7 +16,6 @@ using Microsoft.HackChecklist.UWP.Contracts;
 using Microsoft.HackChecklist.UWP.Services;
 using Microsoft.HackChecklist.UWP.ViewModels.Base;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -25,6 +24,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Core;
 using static Windows.ApplicationModel.FullTrustProcessLauncher;
 using ResponseStatus = Microsoft.HackChecklist.Models.Enums.ResponseStatus;
 
@@ -89,6 +89,8 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             get => _isShownToChecklist;
             set
             {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                    value ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
                 _isShownToChecklist = value;
                 OnPropertyChanged();
             }

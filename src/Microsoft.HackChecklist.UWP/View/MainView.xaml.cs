@@ -19,7 +19,9 @@ using Windows.ApplicationModel;
 using Windows.System.Profile;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
-
+using Windows.UI.ViewManagement;
+using Windows.Foundation;
+using Windows.UI.Core;
 
 namespace Microsoft.HackChecklist.UWP.View
 {
@@ -35,6 +37,8 @@ namespace Microsoft.HackChecklist.UWP.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e) 
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested += MainView_BackRequested; ;
+
             ProgressBar.IsActive = true;
             //we check if the app is running on the desktop: only if that's the case, we leverage the Desktop Bridge specific features
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
@@ -49,6 +53,15 @@ namespace Microsoft.HackChecklist.UWP.View
                 {
                     Debug.WriteLine(exception.Message);
                 }
+            }
+        }
+
+        private void MainView_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            var vm = (DataContext as MainViewModel);
+            if (vm != null && vm.IsShownChecklist)
+            {
+                vm.IsShownChecklist = false;  
             }
         }
 

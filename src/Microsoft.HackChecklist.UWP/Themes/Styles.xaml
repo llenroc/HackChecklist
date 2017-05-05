@@ -57,7 +57,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSizeExtraSmall}"/>
         <Setter Property="Padding" Value="22,0,10,0"/>
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="SubTitleCheckingTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleCheckingTextBlockStyle}">
@@ -151,8 +151,8 @@
 
     <Style x:Key="RestartButtonStyle" TargetType="Button" BasedOn="{StaticResource CheckRegistryButtonStyle}">
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="0,0,0,40"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,40,0,40"/>
         <Setter Property="Width" Value="160"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
@@ -288,29 +288,38 @@
     </Style>
 
     <DataTemplate x:Key="Software">
-        <Grid Width="650">
-            <Grid VerticalAlignment="Top" Height="38" Margin="{Binding IndentationLevel, Converter={StaticResource IndentToLeftMarginConverter}}">
+        <Grid MaxWidth="650">
+            <Grid VerticalAlignment="Top" MinHeight="50" Margin="{Binding IndentationLevel, Converter={StaticResource IndentToLeftMarginConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="14"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleCheckingTextBlockStyle}"/>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsOptional, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="160"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleCheckingTextBlockStyle}" TextTrimming="WordEllipsis"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Visibility="{Binding IsOptional, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Image Source="ms-appx:///Assets/Optional.png" Width="7"/>
                         <TextBlock  Text="Optional" Style="{StaticResource SubTitleOptionalCheckingTextBlockStyle}"/>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
                 <TextBlock Grid.Row="1" Text="{Binding NeedUpdateInformation}" Style="{StaticResource SubTitleCheckingTextBlockStyle}" 
                            Foreground="{Binding Status, Converter={StaticResource StatusToResourceConverter}}"/>
-                <ProgressRing Grid.RowSpan="2" Foreground="{StaticResource SecondaryLightColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" Width="24" Margin="0,0,8,0"
+                <ProgressRing Grid.RowSpan="2" Grid.Column="1" Foreground="{StaticResource SecondaryLightColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" Width="24" Margin="0,0,8,0"
                               IsActive="{Binding ActivateLoading}"/>
-                <Image Grid.RowSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,-3,8,0"
+                <Image Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,-3,8,0"
                        Source="{Binding Status, Converter={StaticResource StatusToImageConverter}}" 
                        Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"/>
                 <HyperlinkButton
                         x:Uid="GetUpdates"
-                        Grid.RowSpan="2"                        
+                        Grid.RowSpan="2"
+                    Grid.Column="1"
                         NavigateUri="{Binding InstallationNotes}"
                         Style="{StaticResource ResponseHyperlinkButtonStyle}"
                         Visibility="{Binding IsUpdateFailed, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -320,7 +329,7 @@
                   </DataTemplate>
                 </HyperlinkButton.ContentTemplate>
               </HyperlinkButton>
-              <Border Grid.RowSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
+              <Border Grid.RowSpan="2" Grid.ColumnSpan="2" Style="{StaticResource CheckingBorderStyle}"/>
             </Grid>            
         </Grid>
     </DataTemplate>
