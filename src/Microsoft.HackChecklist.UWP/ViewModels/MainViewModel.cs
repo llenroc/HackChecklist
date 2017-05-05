@@ -32,7 +32,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
     {
         public const string ConfigurationFileName = "configuration";
         public const string ConfigFileUrl = @"https://raw.githubusercontent.com/nmetulev/HackChecklist/migration/src/Microsoft.HackChecklist.UWP/configuration.json";            
-        public const bool UseRemoteConfiguration;
+        public const bool UseRemoteConfiguration = false;
 
         private readonly IJsonSerializerService _jsonSerializerService;
         private readonly IAppDataService _appDataService;
