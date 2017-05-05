@@ -31,7 +31,8 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public const string ConfigurationFileName = "configuration";
-        public const string ConfigFileUrl = @"https://raw.githubusercontent.com/nmetulev/HackChecklist/migration/src/Microsoft.HackChecklist.UWP/configuration.json";
+        public const string ConfigFileUrl = @"https://raw.githubusercontent.com/nmetulev/HackChecklist/migration/src/Microsoft.HackChecklist.UWP/configuration.json";            
+        public const bool UseRemoteConfiguration;
 
         private readonly IJsonSerializerService _jsonSerializerService;
         private readonly IAppDataService _appDataService;
@@ -112,18 +113,28 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         }
 
         public async void Init()
-        {
-            // TODO: Recover the remote configuration
-            var strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+        {            
+            string strConfiguration;            
+            try
+            {
+                strConfiguration = UseRemoteConfiguration
+                    ? await _networkService.Get(ConfigFileUrl)
+                    : await _appDataService.GetDataFile(ConfigurationFileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
+            }            
 
             Configuration configuration;
             try
             {
                 configuration = _jsonSerializerService.Deserialize<Configuration>(strConfiguration);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(ex);
                 throw;
             }
 
