@@ -109,7 +109,7 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                         ParseRegistryHive(check.RegistryHive),
                         check.RegistryKey,
                         check.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, check.RegistryExpectedValue) == 0;
+                    checkResult = string.CompareOrdinal(registryValue, check.ExpectedValue) == 0;
                     break;
                 case CheckType.IncludedInRegistry:
                     var registryValues = RegistryChecker.GetRegistryValues(
@@ -117,7 +117,7 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                         check.RegistryKey,
                         check.RegistryValue);
                     checkResult = registryValues?.Any(value =>
-                                      value.Contains(check.RegistryExpectedValue, StringComparison.InvariantCultureIgnoreCase)) ?? false;
+                                      value.Contains(check.ExpectedValue, StringComparison.InvariantCultureIgnoreCase)) ?? false;
                     break;
                 case CheckType.VisualStudioInstalled:
                     checkResult = new VisualStudioChecker().IsVisualStudio2017Installed();
@@ -126,17 +126,18 @@ namespace Microsoft.HackChecklist.BackgroundProcess
                     checkResult = new VisualStudioChecker().IsWorkloadInstalled(check.RegistryKey);
                     break;
                 case CheckType.MinimumVisualStudioWorkloadInstalled:
-                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(check.RegistryKey, check.RegistryExpectedValue);
+                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(check.RegistryKey, check.ExpectedValue);
                     break;
                 case CheckType.MinimumRegistryValue:
                     registryValue = RegistryChecker.GetRegistryValue(
                         ParseRegistryHive(check.RegistryHive),
                         check.RegistryKey,
                         check.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, check.RegistryExpectedValue) >= 0;
+                    checkResult = string.CompareOrdinal(registryValue, check.ExpectedValue) >= 0;
                     break;
-                case CheckType.AzureCliInstalled:
-                    checkResult = AzureCliChecker.IsInstalled();
+                case CheckType.RunCmd:
+                    var output = CmdChecker.RunCommand(check.Command);
+                    checkResult = output?.Contains(check.ExpectedValue) ?? false;
                     break;
             }
             return checkResult;

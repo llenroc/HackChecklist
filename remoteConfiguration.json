@@ -9,7 +9,7 @@
           "registryHive": "LocalMachine",
           "registryKey": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
           "registryValue": "CurrentBuildNumber",
-          "registryExpectedValue": "15063"
+          "expectedValue": "15063"
         }
       ],
       "isOptional": "false",
@@ -33,9 +33,9 @@
             {
               "checkType": "MinimumVisualStudioWorkloadInstalled",
               "registryKey": "Microsoft.VisualStudio.Workload.Universal",
-              "registryExpectedValue": "15.0.26403.0"
+              "expectedValue": "15.0.26403.0"
             }
-          ],          
+          ],
           "isOptional": "false",
           "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
         },
@@ -57,7 +57,7 @@
               "checkType": "VisualStudioWorkloadInstalled",
               "registryKey": "Microsoft.VisualStudio.Workload.NetCrossPlat"
             }
-          ],          
+          ],
           "isOptional": "false",
           "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
         },
@@ -82,16 +82,16 @@
           "registryHive": "LocalMachine",
           "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock",
           "registryValue": "AllowAllTrustedApps",
-          "registryExpectedValue": "1"
+          "expectedValue": "1"
         },
         {
           "checkType": "RegistryValue",
           "registryHive": "LocalMachine",
           "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock",
           "registryValue": "AllowDevelopmentWithoutDevLicense",
-          "registryExpectedValue": "1"
+          "expectedValue": "1"
         }
-      ],      
+      ],
       "isOptional": "false",
       "installationNotes": "https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development"
     },
@@ -104,7 +104,7 @@
           "registryHive": "CurrentUser",
           "registryKey": "Software\\Unity Technologies\\Installer",
           "registryValue": "Select_Unity",
-          "registryExpectedValue": "1"
+          "expectedValue": "1"
         }
       ],
       "isOptional": "true",
@@ -119,9 +119,9 @@
           "registryHive": "LocalMachine",
           "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
           "registryValue": "DisplayName",
-          "registryExpectedValue": "Azure Libraries for .NET"
+          "expectedValue": "Azure Libraries for .NET"
         }
-      ],      
+      ],
       "isOptional": "false",
       "installationNotes": "https://www.microsoft.com/en-us/download/details.aspx?id=51657"
     },
@@ -133,9 +133,9 @@
           "registryHive": "LocalMachine",
           "registryKey": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
           "registryValue": "DisplayName",
-          "registryExpectedValue": "Visual Studio 2015 Tools for Azure"
+          "expectedValue": "Visual Studio 2015 Tools for Azure"
         }
-      ],      
+      ],
       "isOptional": "false",
       "installationNotes": "https://azure.microsoft.com/en-us/tools/"
     },
@@ -144,11 +144,25 @@
       "additionalInformation": "version 2.0 or higher",
       "checks": [
         {
-          "checkType": "AzureCliInstalled"
+          "checkType": "RunCmd",
+          "command": "az --version",
+          "expectedValue": "azure-cli"
         }
-      ],      
+      ],
       "isOptional": "false",
       "installationNotes": "https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+    },
+    {
+      "name": "Docker for Windows",
+      "checks": [
+        {
+          "checkType": "RunCmd",
+          "command": "docker --version",
+          "expectedValue": "Docker version"
+        }
+      ],
+      "isOptional": "true",
+      "installationNotes": "https://docs.docker.com/docker-for-windows/install/#install-docker-for-windows"
     }
   ]  
 }

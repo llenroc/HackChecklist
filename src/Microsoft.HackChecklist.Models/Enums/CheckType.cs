@@ -19,6 +19,6 @@ namespace Microsoft.HackChecklist.Models.Enums
         VisualStudioInstalled,
         VisualStudioWorkloadInstalled,
         MinimumVisualStudioWorkloadInstalled,
-        AzureCliInstalled
+        RunCmd
     }
 }

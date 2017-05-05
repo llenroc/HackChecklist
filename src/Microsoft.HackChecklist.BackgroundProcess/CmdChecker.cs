@@ -13,25 +13,24 @@ using System.Diagnostics;
 
 namespace Microsoft.HackChecklist.BackgroundProcess
 {
-    public static class AzureCliChecker
+    public static class CmdChecker
     {
-        public static bool IsInstalled()
+        public static string RunCommand(string command)
         {
             Process process = new Process();
 
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/C az --version";
+            process.StartInfo.Arguments = "/C " + command;
             process.StartInfo.UseShellExecute = false;
 
             process.StartInfo.RedirectStandardOutput = true;
-
             process.Start();
             
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            return output?.Contains("azure-cli") ?? false;
+            return output;
         }
     }
 }

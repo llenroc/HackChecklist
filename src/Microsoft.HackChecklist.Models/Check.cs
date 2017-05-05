@@ -17,12 +17,14 @@ namespace Microsoft.HackChecklist.Models
     {
         public CheckType CheckType { get; set; }
 
+        public string RegistryHive { get; set; }
+
         public string RegistryKey { get; set; }
 
         public string RegistryValue { get; set; }
 
-        public string RegistryExpectedValue { get; set; }
+        public string Command { get; set; }
 
-        public string RegistryHive { get; set; }
+        public string ExpectedValue { get; set; }
     }
 }
