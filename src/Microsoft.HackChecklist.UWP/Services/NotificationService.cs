@@ -25,10 +25,17 @@ namespace Microsoft.HackChecklist.UWP.Services
 
         public async Task NotificationsAsync(string tag)
         {
-            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            var hub = new NotificationHub(AzureHubName, AzureHubConnectionString);
+            try
+            {
+                var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                var hub = new NotificationHub(AzureHubName, AzureHubConnectionString);
 
-            var result = await hub.RegisterNativeAsync(channel.Uri, new List<string> { tag });
+                var result = await hub.RegisterNativeAsync(channel.Uri, new List<string> { tag });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

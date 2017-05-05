@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using static Windows.ApplicationModel.FullTrustProcessLauncher;
 using ResponseStatus = Microsoft.HackChecklist.Models.Enums.ResponseStatus;
 
@@ -31,9 +32,8 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public const string ConfigurationFileName = "configuration";
+        public const string ConfigurationFileName = "configuration.json";
         public const string ConfigFileUrl = @"https://raw.githubusercontent.com/nmetulev/HackChecklist/migration/src/Microsoft.HackChecklist.UWP/configuration.json";            
-        public const bool UseRemoteConfiguration = false;
 
         private readonly IJsonSerializerService _jsonSerializerService;
         private readonly IAppDataService _appDataService;
@@ -108,19 +108,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         {
             await _notificationService.NotificationsAsync(NotificationTags.NotTested);
 
-            string strConfiguration;            
-            try
-            {
-                strConfiguration = UseRemoteConfiguration
-                    ? await _networkService.Get(ConfigFileUrl)
-                    : await _appDataService.GetDataFile(ConfigurationFileName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                strConfiguration = await _appDataService.GetDataFile(ConfigurationFileName);
-            }            
-
+            string strConfiguration = await GetConfiguration();          
             Configuration configuration;
             try
             {
@@ -138,6 +126,37 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             }
 
             _analyticsService.TrackScreen(AnalyticsConfiguration.MainViewScreenName);
+        }
+
+        private async Task<string> GetConfiguration()
+        {
+            var configuration = string.Empty;
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            try
+            {
+                configuration = await _networkService.Get(ConfigFileUrl);
+                if (localFolder != null)
+                {
+                    StorageFile storedConfiguration = await localFolder.CreateFileAsync(ConfigurationFileName, CreationCollisionOption.ReplaceExisting);
+                    await FileIO.WriteTextAsync(storedConfiguration, configuration);
+                }
+                if (!string.IsNullOrEmpty(configuration)) return configuration;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);                             
+            }
+            try
+            {
+                StorageFile storedConfiguration = await localFolder.GetFileAsync(ConfigurationFileName);
+                configuration = await FileIO.ReadTextAsync(storedConfiguration);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                configuration = await _appDataService.GetDataFile(ConfigurationFileName);
+            }
+            return configuration;
         }
 		
 		private void AddRequirement(Requirement requirement, int indentation)

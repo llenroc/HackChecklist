@@ -25,7 +25,7 @@ namespace Microsoft.HackChecklist.UWP.Services
             var configText = string.Empty;
             try
             {
-                var uri = new Uri($"{RootPath}{fileName}.json");
+                var uri = new Uri($"{RootPath}{fileName}");
 
                 var configFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
                 if (configFile != null)
