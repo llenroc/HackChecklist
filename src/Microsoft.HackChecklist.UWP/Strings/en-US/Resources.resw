@@ -122,7 +122,7 @@
     <value>Check now</value>
   </data>
   <data name="GetUpdates.Content" xml:space="preserve">
-    <value>Get updates</value>
+    <value>Install</value>
   </data>
   <data name="NeedUpdate" xml:space="preserve">
     <value>You need to update to {0}</value>
@@ -152,7 +152,7 @@
     <value>Checking... please wait</value>
   </data>
   <data name="ToolHelp.Text" xml:space="preserve">
-    <value>This tool wil help check and make sure you have all the latest softwares needed for the xxxx hackathon</value>
+    <value>This tool wil help check and make sure you have all the latest softwares needed for the Build Tour hack event</value>
   </data>
   <data name="Welcome.Text" xml:space="preserve">
     <value>Welcome!</value>

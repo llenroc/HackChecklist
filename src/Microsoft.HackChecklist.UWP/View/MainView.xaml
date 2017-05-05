@@ -70,7 +70,7 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
                 <Button Grid.Row="2" x:Uid="Restart" Style="{StaticResource RestartButtonStyle}"
-                    Command="{Binding CheckRequirementsCommand}"/>
+                    Command="{Binding CheckRequirementsCommand}" />
             </StackPanel>
         </ScrollViewer>
         

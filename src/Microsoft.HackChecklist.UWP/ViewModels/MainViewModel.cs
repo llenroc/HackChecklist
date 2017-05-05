@@ -89,6 +89,9 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             get => _isShownToChecklist;
             set
             {
+                _analyticsService.TrackScreen(value ?
+                    AnalyticsConfiguration.TestsScreenName : AnalyticsConfiguration.WelcomeScreenName);
+
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
                     value ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
                 _isShownToChecklist = value;
@@ -102,6 +105,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             set
             {
                 _isChecking = value;
+                (CheckRequirementsCommand as RelayCommand).RaiseCanExecuteChanged();
                 OnPropertyChanged();
             }
         }
@@ -127,7 +131,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 AddRequirement(requirement, 0);
             }
 
-            _analyticsService.TrackScreen(AnalyticsConfiguration.MainViewScreenName);
+            _analyticsService.TrackScreen(AnalyticsConfiguration.WelcomeScreenName);
         }
 
         private async Task<string> GetConfiguration()
@@ -193,14 +197,20 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             if (App.Connection == null) return;
 
+            bool AllPassed = true;
+            bool RequiredPassed = true;
+
             foreach (var requirement in Requirements)
             {
-                await CheckRequirement(requirement);
+                var status = await CheckRequirement(requirement);
+                if (AllPassed && !status.passed) AllPassed = false;
+                if (RequiredPassed && status.required && !status.passed) RequiredPassed = false;
             }
 
             ShowMessageResponse();
             UpdateNotificationTags();
-            
+            SendCompletedTestsAnalytics(AllPassed, RequiredPassed);
+
             IsChecking = false;
         }
 
@@ -217,7 +227,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             }
         }
 
-        private async Task CheckRequirement(RequirementViewModel requirement)
+        private async Task<(bool passed, bool required)> CheckRequirement(RequirementViewModel requirement)
         {
             var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement.ModelObject) } };
 
@@ -234,7 +244,9 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 AnalyticsConfiguration.CheckCategory,
                 AnalyticsConfiguration.CheckRequirementAction,
                 requirement.Name,
-                passed ? 1 : 0);            
+                passed ? 1 : 0);
+
+            return (passed, requirement.IsOptional);
         }
 
         private void ChangeStatus(bool passed, RequirementViewModel requirement)
@@ -283,6 +295,22 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                     : NotificationTags.RequiredTestsPassed;
 
             _notificationService.NotificationsAsync(tag);
+        }
+
+        private void SendCompletedTestsAnalytics( bool allPassed, bool requiredPassed)
+        {
+            if (allPassed)
+            {
+                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.AllTestPassedAction, null, 0);
+            }
+            else if (requiredPassed)
+            {
+                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.AllRequiredPassedAction, null, 0);
+            }
+            else
+            {
+                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.RequiredFailedAction, null, 0);
+            }
         }
     }
 }

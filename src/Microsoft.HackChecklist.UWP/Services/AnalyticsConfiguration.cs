@@ -19,10 +19,15 @@ namespace Microsoft.HackChecklist.UWP.Services
         public const bool ReportUncaughtExceptions = true;
         public const bool AutoAppLifetimeMonitoring = true;
         
-        public const string MainViewScreenName = "MainView";
+        public const string WelcomeScreenName = "WelcomeView";
+        public const string TestsScreenName = "TestView";
 
         public const string CheckCategory = "Check";
         public const string CheckAllRequirementsAction = "CheckAllRequirementsAction";
         public const string CheckRequirementAction = "CheckRequirementAction";
+        public const string AllRequiredPassedAction = "AllRequiredTestsPassed";
+        public const string AllTestPassedAction = "AllTestPassed";
+        public const string RequiredFailedAction = "RequiredTestsFailed";
+
     }
 }
