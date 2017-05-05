@@ -90,6 +90,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Check.cs" />
     <Compile Include="Consts\BackgroundProcessCommand.cs" />
     <Compile Include="Enums\CheckType.cs" />
     <Compile Include="Configuration.cs" />

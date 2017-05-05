@@ -10,7 +10,7 @@
 //*********************************************************
 
 using Microsoft.HackChecklist.Models.Contracts;
-using Microsoft.HackChecklist.Models.Enums;
+using System.Collections.Generic;
 
 namespace Microsoft.HackChecklist.Models
 {
@@ -20,15 +20,7 @@ namespace Microsoft.HackChecklist.Models
 
         public string AdditionalInformation { get; set; }
 
-        public CheckType CheckType { get; set; }
-
-        public string RegistryKey { get; set; }
-
-        public string RegistryValue { get; set; }
-
-        public string RegistryExpectedValue { get; set; }
-
-        public string RegistryHive { get; set; }
+        public IEnumerable<Check> Checks { get; set; }
 
         public bool IsOptional { get; set; }
 

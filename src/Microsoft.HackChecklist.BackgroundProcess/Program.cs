@@ -84,58 +84,61 @@ namespace Microsoft.HackChecklist.BackgroundProcess
             var software = (Software)value;
             if (software != null)
             {
-                valueSet.Add(software.Name, CheckRequirement(software));
+                var checkResult = false;
+                if (software.Checks?.Any() ?? false)
+                {
+                    foreach (var check in software.Checks)
+                    {
+                        checkResult = checkResult || CheckRequirement(check);
+                    }
+                }
+                valueSet.Add(software.Name, checkResult);
             }
             Debug.WriteLine($"Responsing valueSet: {valueSet}");
             await args.Request.SendResponseAsync(valueSet);
         }
 
-        private static bool CheckRequirement(Software software)
+        private static bool CheckRequirement(Check check)
         {
             string registryValue;
-            var checkResult = false;
-            Debug.WriteLine($"Checking: {software.Name}");
-            switch (software.CheckType)
+            var checkResult = false;            
+            switch (check.CheckType)
             {
                 case CheckType.RegistryValue:
                     registryValue = RegistryChecker.GetRegistryValue(
-                        ParseRegistryHive(software.RegistryHive),
-                        software.RegistryKey,
-                        software.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, software.RegistryExpectedValue) == 0;
-                    Debug.WriteLine($" -----> {registryValue}");
+                        ParseRegistryHive(check.RegistryHive),
+                        check.RegistryKey,
+                        check.RegistryValue);
+                    checkResult = string.CompareOrdinal(registryValue, check.RegistryExpectedValue) == 0;
                     break;
                 case CheckType.IncludedInRegistry:
                     var registryValues = RegistryChecker.GetRegistryValues(
-                        ParseRegistryHive(software.RegistryHive),
-                        software.RegistryKey,
-                        software.RegistryValue);
+                        ParseRegistryHive(check.RegistryHive),
+                        check.RegistryKey,
+                        check.RegistryValue);
                     checkResult = registryValues?.Any(value =>
-                                      value.Contains(software.RegistryExpectedValue, StringComparison.InvariantCultureIgnoreCase)) ?? false;
-                    Debug.WriteLine($" -----> {registryValues.ToList().Count()}");
+                                      value.Contains(check.RegistryExpectedValue, StringComparison.InvariantCultureIgnoreCase)) ?? false;
                     break;
                 case CheckType.VisualStudioInstalled:
                     checkResult = new VisualStudioChecker().IsVisualStudio2017Installed();
                     break;
                 case CheckType.VisualStudioWorkloadInstalled:
-                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(software.RegistryKey);
+                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(check.RegistryKey);
                     break;
                 case CheckType.MinimumVisualStudioWorkloadInstalled:
-                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(software.RegistryKey, software.RegistryExpectedValue);
+                    checkResult = new VisualStudioChecker().IsWorkloadInstalled(check.RegistryKey, check.RegistryExpectedValue);
                     break;
                 case CheckType.MinimumRegistryValue:
                     registryValue = RegistryChecker.GetRegistryValue(
-                        ParseRegistryHive(software.RegistryHive),
-                        software.RegistryKey,
-                        software.RegistryValue);
-                    checkResult = string.CompareOrdinal(registryValue, software.RegistryExpectedValue) >= 0;
-                    Debug.WriteLine($" -----> {registryValue}");
+                        ParseRegistryHive(check.RegistryHive),
+                        check.RegistryKey,
+                        check.RegistryValue);
+                    checkResult = string.CompareOrdinal(registryValue, check.RegistryExpectedValue) >= 0;
                     break;
                 case CheckType.AzureCliInstalled:
                     checkResult = AzureCliChecker.IsInstalled();
                     break;
             }
-            Debug.WriteLine($" -----> Passed: {checkResult}");
             return checkResult;
         }
 

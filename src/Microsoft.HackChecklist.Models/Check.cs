@@ -11,13 +11,18 @@
 
 using Microsoft.HackChecklist.Models.Enums;
 
-namespace Microsoft.HackChecklist.Models.Contracts
+namespace Microsoft.HackChecklist.Models
 {
-    public interface ISoftware
+    public class Check
     {
-        string Name { get; set; }
-        string AdditionalInformation { get; set; }      
-        bool IsOptional { get; set; }
-        string InstallationNotes { get; set; }
+        public CheckType CheckType { get; set; }
+
+        public string RegistryKey { get; set; }
+
+        public string RegistryValue { get; set; }
+
+        public string RegistryExpectedValue { get; set; }
+
+        public string RegistryHive { get; set; }
     }
 }

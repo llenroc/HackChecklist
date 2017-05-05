@@ -195,7 +195,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         private async Task CheckRequirementRecursive(RequirementViewModel requirement)
         {
-            var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement) } };
+            var valueSet = new ValueSet { { BackgroundProcessCommand.RunChecks, _jsonSerializerService.Serialize(requirement.ModelObject) } };
 
             requirement.Status = ResponseStatus.Processing;
             requirement.IsLoading = true;

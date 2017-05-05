@@ -61,17 +61,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 _requirement.AdditionalInformation = value;
                 OnPropertyChanged(nameof(AdditionalInformation));
             }
-        }
-
-        public CheckType CheckType
-        {
-            get => _requirement.CheckType;
-            set
-            {
-                _requirement.CheckType = value;
-                OnPropertyChanged(nameof(CheckType));
-            }
-        }
+        }        
 
         public bool IsOptional
         {
