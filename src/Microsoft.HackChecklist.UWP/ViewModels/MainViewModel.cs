@@ -48,6 +48,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         private bool _isShownToChecklist = false;
         private string _messageChecking;
         private string _messageChecked;
+        private bool _feedbackSupported = false;
 
         public MainViewModel(IJsonSerializerService jsonSerializerService, IAppDataService appDataService, IAnalyticsService analyticsService,
             INetworkService networkService, INotificationService notificationService)
@@ -105,11 +106,21 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             set
             {
                 _isChecking = value;
+                OnPropertyChanged();
                 (CheckRequirementsCommand as RelayCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool FeedbackSupported
+        {
+            get { return _feedbackSupported; }
+            set
+            {
+                _feedbackSupported = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public async void Init()
         {
             await _notificationService.NotificationsAsync(NotificationTags.NotTested);
@@ -125,6 +136,8 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 Console.WriteLine(ex);
                 throw;
             }
+
+            FeedbackSupported = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
 
             foreach (var requirement in configuration.Requirements)
             {
@@ -253,7 +266,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 requirement.Name,
                 passed ? 1 : 0);
 
-            return (passed, requirement.IsOptional);
+            return (passed, !requirement.IsOptional);
         }
 
         private void ChangeStatus(bool passed, RequirementViewModel requirement)
@@ -335,6 +348,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             if (requiredPassed && LocalDataService.IsSet(LocalDataService.FailedProperty))
             {
+                LocalDataService.Clear(LocalDataService.FailedProperty);
                 _analyticsService.TrackEvent(
                     AnalyticsConfiguration.CheckCategory,
                     AnalyticsConfiguration.ChecklistPassedAfterFailingEvent, null, 0);
@@ -353,6 +367,12 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                     AnalyticsConfiguration.CheckCategory,
                     AnalyticsConfiguration.ChecklistFailedAgainEvent, null, 0);
             }
+        }
+
+        public async Task ProvideFeedback()
+        {
+            var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+            await launcher.LaunchAsync();
         }
     }
 }

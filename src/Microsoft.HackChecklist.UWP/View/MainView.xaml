@@ -17,6 +17,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Microsoft.HackChecklist.UWP.View"
     mc:Ignorable="d" HorizontalContentAlignment="Stretch">
 
     <Grid>
@@ -49,7 +50,10 @@
             <TextBlock x:Uid="ToolHelp" Style="{StaticResource SubTitleTextBlockStyle}"/>
             <Button x:Uid="CheckNow" Style="{StaticResource CheckRegistryButtonStyle}" 
                     Command="{Binding CheckRequirementsCommand}"/>
-            <HyperlinkButton x:Uid="Privacy" Style="{StaticResource PrivacyStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <HyperlinkButton x:Uid="Privacy" Style="{StaticResource PrivacyStyle}"/>
+                <HyperlinkButton x:Uid="Feedback" x:Name="FeedbackLink" Style="{StaticResource PrivacyStyle}" Margin="20,0,0,0" Visibility="{x:Bind _viewModel.FeedbackSupported, Mode=OneWay}" Click="FeedbackLink_Click"/>
+            </StackPanel>
         </StackPanel>
 
         <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Auto" Background="White" 
@@ -69,11 +73,13 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <Button Grid.Row="2" x:Uid="Restart" Style="{StaticResource RestartButtonStyle}"
-                    Command="{Binding CheckRequirementsCommand}" />
+
+                <Button x:Name="RestartButton"
+                        Click="RestartButton_Click" 
+                        x:Uid="Restart" 
+                        Style="{StaticResource RestartButtonStyle}"/>
             </StackPanel>
         </ScrollViewer>
-        
         <ProgressRing x:Name="ProgressBar" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"
                       Width="50" Height="50" />
     </Grid>

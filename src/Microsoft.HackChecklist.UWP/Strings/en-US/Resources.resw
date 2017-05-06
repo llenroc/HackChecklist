@@ -120,6 +120,9 @@
   <data name="CheckNow.Content" xml:space="preserve">
     <value>Check now</value>
   </data>
+  <data name="Feedback.Content" xml:space="preserve">
+    <value>Provide Feedback</value>
+  </data>
   <data name="GetUpdates.Content" xml:space="preserve">
     <value>Install</value>
   </data>
