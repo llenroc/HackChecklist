@@ -52,7 +52,7 @@
         },
         {
           "name": "Mobile development with .NET",
-          "additinalInformation": "Xamarin with Android SDK, Java, and Google Android Emulator",
+          "additionalInformation": "Xamarin with Android SDK, Java, and Google Android Emulator",
           "checks": [
             {
               "checkType": "VisualStudioWorkloadInstalled",
