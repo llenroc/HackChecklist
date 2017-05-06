@@ -131,6 +131,12 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 AddRequirement(requirement, 0);
             }
 
+            if (!LocalDataService.IsSet(LocalDataService.FirstLaunchProperty))
+            {
+                LocalDataService.Set(LocalDataService.FirstLaunchProperty);
+                _analyticsService.TrackEvent(AnalyticsConfiguration.AppCategory, AnalyticsConfiguration.AppInstalledEvent);
+            }
+
             _analyticsService.TrackScreen(AnalyticsConfiguration.WelcomeScreenName);
         }
 
@@ -191,7 +197,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             MessageChecking = _resourceLoader.GetString("TitleChecking");
             MessageChecked = string.Empty;
 
-            _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.CheckAllRequirementsAction, null, 0);
+            _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.ChecklistStartedAction, null, 0);
 
             await LaunchBackgroundProcess();
 
@@ -210,6 +216,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             ShowMessageResponse();
             UpdateNotificationTags();
             SendCompletedTestsAnalytics(AllPassed, RequiredPassed);
+            _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.ChecklistCompletedAction, null, 0);
 
             IsChecking = false;
         }
@@ -242,7 +249,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
             _analyticsService.TrackEvent(
                 AnalyticsConfiguration.CheckCategory,
-                AnalyticsConfiguration.CheckRequirementAction,
+                AnalyticsConfiguration.ChecklistCheckSingleRequirementEvent,
                 requirement.Name,
                 passed ? 1 : 0);
 
@@ -301,15 +308,50 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         {
             if (allPassed)
             {
-                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.AllTestPassedAction, null, 0);
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory, 
+                    AnalyticsConfiguration.ChecklistPassedAllEvent, null, 0);
             }
             else if (requiredPassed)
             {
-                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.AllRequiredPassedAction, null, 0);
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory, 
+                    AnalyticsConfiguration.ChecklistPassedEvent, null, 0);
             }
             else
             {
-                _analyticsService.TrackEvent(AnalyticsConfiguration.CheckCategory, AnalyticsConfiguration.RequiredFailedAction, null, 0);
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory,
+                    AnalyticsConfiguration.ChecklistFailedEvent, null, 0);
+            }
+
+            if (requiredPassed && !LocalDataService.IsSet(LocalDataService.PassedProperty))
+            {
+                LocalDataService.Set(LocalDataService.PassedProperty);
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory, 
+                    AnalyticsConfiguration.ChecklistPassedSingletonEvent, null, 0);
+            }
+
+            if (requiredPassed && LocalDataService.IsSet(LocalDataService.FailedProperty))
+            {
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory,
+                    AnalyticsConfiguration.ChecklistPassedAfterFailingEvent, null, 0);
+            }
+
+            if (!requiredPassed && !LocalDataService.IsSet(LocalDataService.FailedProperty))
+            {
+                LocalDataService.Set(LocalDataService.FailedProperty);
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory,
+                    AnalyticsConfiguration.ChecklistFailedSingletonEvent, null, 0);
+            }
+            else if (!requiredPassed)
+            {
+                _analyticsService.TrackEvent(
+                    AnalyticsConfiguration.CheckCategory,
+                    AnalyticsConfiguration.ChecklistFailedAgainEvent, null, 0);
             }
         }
     }

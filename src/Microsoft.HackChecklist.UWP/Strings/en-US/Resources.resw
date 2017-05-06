@@ -47,7 +47,6 @@
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -140,10 +139,10 @@
     <value>Stop checker</value>
   </data>
   <data name="SubTitleCheckFile" xml:space="preserve">
-    <value>Please update/install the required apps</value>
+    <value>Please update/install the required tools</value>
   </data>
   <data name="SubTitleCheckSucces" xml:space="preserve">
-    <value>Congratulations, you have all the required apps</value>
+    <value>Congratulations, you have all the required tools</value>
   </data>
   <data name="TitleCheckCompleted" xml:space="preserve">
     <value>Check completed</value>
@@ -152,7 +151,7 @@
     <value>Checking... please wait</value>
   </data>
   <data name="ToolHelp.Text" xml:space="preserve">
-    <value>This tool wil help check and make sure you have all the latest softwares needed for the Build Tour hack event</value>
+    <value>This app will help check and make sure your machine has all the tools needed for the Build Tour hack event</value>
   </data>
   <data name="Welcome.Text" xml:space="preserve">
     <value>Welcome!</value>

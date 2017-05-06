@@ -23,11 +23,20 @@ namespace Microsoft.HackChecklist.UWP.Services
         public const string TestsScreenName = "TestView";
 
         public const string CheckCategory = "Check";
-        public const string CheckAllRequirementsAction = "CheckAllRequirementsAction";
-        public const string CheckRequirementAction = "CheckRequirementAction";
-        public const string AllRequiredPassedAction = "AllRequiredTestsPassed";
-        public const string AllTestPassedAction = "AllTestPassed";
-        public const string RequiredFailedAction = "RequiredTestsFailed";
+        public const string AppCategory = "App";
 
+        public const string AppInstalledEvent = "AppInstalledAndLaunched";
+        public const string ChecklistStartedAction = "ChecklistStarted";
+        public const string ChecklistCompletedAction = "ChecklistCompleted";
+
+        public const string ChecklistCheckSingleRequirementEvent = "ChecklistSingleRequirementTested";
+
+        public const string ChecklistFailedEvent = "ChecklistFailed";
+        public const string ChecklistFailedSingletonEvent = "ChecklistFailedSingleton";
+        public const string ChecklistPassedEvent = "ChecklistPassed";
+        public const string ChecklistPassedSingletonEvent = "ChecklistPassedSingleton";
+        public const string ChecklistPassedAllEvent = "ChecklistPassedAll";
+        public const string ChecklistFailedAgainEvent = "ChecklistFailedAgain";
+        public const string ChecklistPassedAfterFailingEvent = "ChecklistPassedAfterFailing";
     }
 }

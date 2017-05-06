@@ -11,12 +11,14 @@
 
 using GoogleAnalytics;
 using Microsoft.HackChecklist.UWP.Contracts;
+using Microsoft.Services.Store.Engagement;
 
 namespace Microsoft.HackChecklist.UWP.Services
 {
     public class AnalyticsService : IAnalyticsService
     {
         private Tracker _tracker;
+        private StoreServicesCustomEventLogger _logger;
 
         public Tracker Tracker
         {
@@ -25,9 +27,10 @@ namespace Microsoft.HackChecklist.UWP.Services
                 return _tracker ?? Init();
             } 
         }
-        public void TrackEvent(string category, string action, string label, long value)
+        public void TrackEvent(string category, string action, string label = null, long value = 0)
         {
            Tracker.Send(HitBuilder.CreateCustomEvent(category, action, label, value).Build());
+            _logger.Log(action);
         }
 
         public void TrackScreen(string screenName)
@@ -38,6 +41,8 @@ namespace Microsoft.HackChecklist.UWP.Services
 
         private Tracker Init()
         {
+            _logger = StoreServicesCustomEventLogger.GetDefault();
+
             _tracker = AnalyticsManager.Current.CreateTracker(AnalyticsConfiguration.TrackingId);
             AnalyticsManager.Current.IsDebug = AnalyticsConfiguration.IsDebug;
             AnalyticsManager.Current.ReportUncaughtExceptions = AnalyticsConfiguration.ReportUncaughtExceptions;

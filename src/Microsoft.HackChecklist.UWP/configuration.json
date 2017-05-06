@@ -13,7 +13,7 @@
         }
       ],
       "isOptional": "false",
-      "installationNotes": "https://www.microsoft.com/en-us/software-download/windows10"
+      "installationNotes": "https://www.microsoft.com/software-download/windows10"
     },
     {
       "name": "Visual Studio 2017",
@@ -27,8 +27,8 @@
       "installationNotes": "https://www.visualstudio.com/vs/",
       "modules": [
         {
-          "name": "Universal Windows Platform SDK",
-          "additionalInformation": "version 10.0.15063.0 or higher",
+          "name": "Universal Windows Platform development",
+          "additionalInformation": "version 10.0.15063.0",
           "checks": [
             {
               "checkType": "MinimumVisualStudioWorkloadInstalled",
@@ -37,7 +37,7 @@
             }
           ],
           "isOptional": "false",
-          "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
+          "installationNotes": "https://www.visualstudio.com/vs/visual-studio-workloads/"
         },
         {
           "name": ".NET Desktop Development",
@@ -48,10 +48,11 @@
             }
           ],
           "isOptional": "false",
-          "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
+          "installationNotes": "https://www.visualstudio.com/vs/visual-studio-workloads/"
         },
         {
-          "name": "Xamarin with Android SDK, Java, and Google Android Emulator",
+          "name": "Mobile development with .NET",
+          "additinalInformation": "Xamarin with Android SDK, Java, and Google Android Emulator",
           "checks": [
             {
               "checkType": "VisualStudioWorkloadInstalled",
@@ -59,10 +60,10 @@
             }
           ],
           "isOptional": "false",
-          "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
+          "installationNotes": "https://www.visualstudio.com/vs/visual-studio-workloads/"
         },
         {
-          "name": "C++ Desktop Development",
+          "name": "Windows Desktop Development with C++",
           "checks": [
             {
               "checkType": "VisualStudioWorkloadInstalled",
@@ -70,7 +71,7 @@
             }
           ],
           "isOptional": "true",
-          "installationNotes": "https://www.visualstudio.com/es/vs/visual-studio-workloads/"
+          "installationNotes": "https://www.visualstudio.com/vs/visual-studio-workloads/"
         }
       ]
     },

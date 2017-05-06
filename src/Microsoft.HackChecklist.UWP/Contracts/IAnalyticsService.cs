@@ -17,7 +17,7 @@ namespace Microsoft.HackChecklist.UWP.Contracts
     {
         Tracker Tracker { get; }
 
-        void TrackEvent(string category, string action, string label, long value);
+        void TrackEvent(string category, string action, string label = null, long value = 0);
 
         void TrackScreen(string screenName);
     }
