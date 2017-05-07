@@ -103,9 +103,9 @@
         {
           "checkType": "RegistryValue",
           "registryHive": "CurrentUser",
-          "registryKey": "Software\\Unity Technologies\\Installer",
-          "registryValue": "Select_Unity",
-          "expectedValue": "1"
+          "registryKey": "Software\\Unity Technologies\\Installer\\Unity",
+          "registryValue": "Version",
+          "expectedValue": "5.6.0f3"
         }
       ],
       "isOptional": "true",
