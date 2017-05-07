@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.HackChecklist.UWP</RootNamespace>
     <AssemblyName>Microsoft.HackChecklist.UWP</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
@@ -142,7 +142,7 @@
     </Content>
     <Content Include="Assets\Fonts\segoeui.ttf" />
     <Content Include="Assets\Fonts\segoeuil.ttf" />
-    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\mk\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Microsoft.HackChecklist.UWP_StoreKey.pfx" />
@@ -155,6 +155,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
