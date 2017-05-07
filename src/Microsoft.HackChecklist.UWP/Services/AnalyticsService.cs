@@ -11,6 +11,7 @@
 
 using GoogleAnalytics;
 using Microsoft.HackChecklist.UWP.Contracts;
+using Microsoft.HockeyApp;
 using Microsoft.Services.Store.Engagement;
 
 namespace Microsoft.HackChecklist.UWP.Services
@@ -31,6 +32,7 @@ namespace Microsoft.HackChecklist.UWP.Services
         {
            Tracker.Send(HitBuilder.CreateCustomEvent(category, action, label, value).Build());
             _logger.Log(action);
+            HockeyClient.Current.TrackEvent(action);
         }
 
         public void TrackScreen(string screenName)

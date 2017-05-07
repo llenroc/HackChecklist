@@ -9,6 +9,7 @@
 //
 //*********************************************************
 
+using Microsoft.HockeyApp;
 using System;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.AppService;
@@ -32,6 +33,7 @@ namespace Microsoft.HackChecklist.UWP
         {
             InitializeComponent();
 
+            HockeyClient.Current.Configure("0c4491180fed4adf9cff0e2764d176b7");
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.PreferredLaunchViewSize = new Size(960, 670);
 

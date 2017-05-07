@@ -22,6 +22,7 @@
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <PackageCertificateThumbprint>7F13F39EC8A67FC1ABA9CAFD0BE53D5DFF844281</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>Microsoft.HackChecklist.UWP_StoreKey.pfx</PackageCertificateKeyFile>
+    <HockeyAppResourceId>741a212549124704bd4f9d1c9d1f5044</HockeyAppResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -145,6 +146,7 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\HockeyApp\ConnectedService.json" />
     <None Include="Microsoft.HackChecklist.UWP_StoreKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
@@ -194,6 +196,9 @@
   <ItemGroup>
     <PackageReference Include="Autofac">
       <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="HockeySDK.UWP">
+      <Version>4.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.3.3</Version>
@@ -262,6 +267,9 @@
       <Link>BackgroundProcess\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
