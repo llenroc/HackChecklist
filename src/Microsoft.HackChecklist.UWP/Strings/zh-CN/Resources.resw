@@ -154,7 +154,7 @@
     <value>检查中…请稍候</value>
   </data>
   <data name="ToolHelp.Text" xml:space="preserve">
-    <value>此应用程序检查您的电脑以确保您已经安装了这次Build  Tour编程活动所需的所有工具</value>
+    <value>此应用程序检查您的电脑以确保您已经安装了这次Build Tour编程活动所需的所有工具</value>
   </data>
   <data name="Welcome.Text" xml:space="preserve">
     <value>欢迎!</value>

@@ -44,7 +44,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
         private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
         private string _message;
-        private bool _isChecking;
+        private bool _isChecking = true;
         private bool _isShownToChecklist = false;
         private string _messageChecking;
         private string _messageChecked;
@@ -137,6 +137,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
                 throw;
             }
 
+            IsChecking = false;
             FeedbackSupported = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.IsSupported();
 
             foreach (var requirement in configuration.Requirements)

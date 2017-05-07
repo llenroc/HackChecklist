@@ -48,8 +48,19 @@
         <StackPanel x:Name="WelcomePanel" Margin="300,160,0,0" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left">
             <TextBlock x:Uid="Welcome" Style="{StaticResource TitleTextBlockStyle}"/>
             <TextBlock x:Uid="ToolHelp" Style="{StaticResource SubTitleTextBlockStyle}"/>
-            <Button x:Uid="CheckNow" Style="{StaticResource CheckRegistryButtonStyle}" 
-                    Command="{Binding CheckRequirementsCommand}"/>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Uid="CheckNow" 
+                    x:Name="CheckNowButton"
+                    IsEnabled="False"
+                    Style="{StaticResource CheckRegistryButtonStyle}" 
+                    Click="RestartButton_Click"
+                    />
+                <ProgressRing x:Name="CheckingProgressRing" 
+                              IsActive="True" 
+                              Background="Transparent" 
+                              Height="20" Width="20" 
+                              Margin="20,0,0,0" VerticalAlignment="Center"></ProgressRing>
+            </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <HyperlinkButton x:Uid="Privacy" Style="{StaticResource PrivacyStyle}"/>
                 <HyperlinkButton x:Uid="Feedback" x:Name="FeedbackLink" Style="{StaticResource PrivacyStyle}" Margin="20,0,0,0" Visibility="{x:Bind _viewModel.FeedbackSupported, Mode=OneWay}" Click="FeedbackLink_Click"/>
@@ -77,10 +88,12 @@
                 <Button x:Name="RestartButton"
                         Click="RestartButton_Click" 
                         x:Uid="Restart" 
+                        IsEnabled="False"
                         Style="{StaticResource RestartButtonStyle}"/>
             </StackPanel>
         </ScrollViewer>
-        <ProgressRing x:Name="ProgressBar" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"
+        
+        <ProgressRing x:Name="ProgressBar" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50"
                       Width="50" Height="50" />
     </Grid>
 </Page>

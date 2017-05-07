@@ -87,6 +87,8 @@ namespace Microsoft.HackChecklist.UWP.View
             if (e.PropertyName == "IsChecking")
             {
                 RestartButton.IsEnabled = !_viewModel.IsChecking;
+                CheckNowButton.IsEnabled = !_viewModel.IsChecking;
+                CheckingProgressRing.IsActive = _viewModel.IsChecking;
             }
         }
 
