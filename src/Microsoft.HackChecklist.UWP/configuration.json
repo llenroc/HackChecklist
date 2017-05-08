@@ -134,6 +134,11 @@
           "checkType": "RunCmd",
           "command": "az --version",
           "expectedValue": "azure-cli"
+        },
+        {
+          "checkType": "RunCmd",
+          "command": "bash -c \"az --version\"",
+          "expectedValue": "azure-cli"
         }
       ],
       "isOptional": "false",
