@@ -45,6 +45,8 @@
         <Image Source="ms-appx:///Assets/Buildings.png" VerticalAlignment="Bottom" MaxHeight="200" Stretch="Uniform"/>
         <Image Source="ms-appx:///Assets/clouds.png" VerticalAlignment="Top" Width="960" Stretch="Uniform"/>
 
+        <TextBlock Text="{x:Bind Version}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="9" Foreground="Gray" Margin="5"></TextBlock>
+
         <StackPanel x:Name="WelcomePanel" Margin="300,160,0,0" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left">
             <TextBlock x:Uid="Welcome" Style="{StaticResource TitleTextBlockStyle}"/>
             <TextBlock x:Uid="ToolHelp" Style="{StaticResource SubTitleTextBlockStyle}"/>

@@ -22,14 +22,18 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.ViewManagement;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Microsoft.HackChecklist.UWP.Services;
 
 namespace Microsoft.HackChecklist.UWP.View
 {
     public sealed partial class MainView : Page
     {
         private MainViewModel _viewModel;
+        private string Version;
+
         public MainView()
         {
+            Version = AnalyticsService.GetAppVersion();
             InitializeComponent();
             IoCConfiguration.Configure();
             _viewModel = IoCConfiguration.GetType<MainViewModel>() as MainViewModel;

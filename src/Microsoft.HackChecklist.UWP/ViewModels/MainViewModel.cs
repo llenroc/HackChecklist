@@ -148,7 +148,7 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
             if (!LocalDataService.IsSet(LocalDataService.FirstLaunchProperty))
             {
                 LocalDataService.Set(LocalDataService.FirstLaunchProperty);
-                _analyticsService.TrackEvent(AnalyticsConfiguration.AppCategory, AnalyticsConfiguration.AppInstalledEvent);
+                _analyticsService.TrackEvent(AnalyticsConfiguration.AppCategory, AnalyticsConfiguration.AppInstalledEvent, AnalyticsService.GetDeviceInfo());
             }
 
             _analyticsService.TrackScreen(AnalyticsConfiguration.WelcomeScreenName);
@@ -206,6 +206,12 @@ namespace Microsoft.HackChecklist.UWP.ViewModels
 
         private async void CheckRequirementsAction()
         {
+            foreach (var requirement in Requirements)
+            {
+                requirement.Status = ResponseStatus.Processing;
+                requirement.IsLoading = true;
+            }
+
             IsShownChecklist = true;
             IsChecking = true;
             MessageChecking = _resourceLoader.GetString("TitleChecking");

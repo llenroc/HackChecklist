@@ -312,7 +312,7 @@
                 <TextBlock Grid.Row="1" Text="{Binding NeedUpdateInformation}" Style="{StaticResource SubTitleCheckingTextBlockStyle}" 
                            Foreground="{Binding Status, Converter={StaticResource StatusToResourceConverter}}"/>
                 <ProgressRing Grid.RowSpan="2" Grid.Column="1" Foreground="{StaticResource SecondaryLightColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" Width="24" Margin="0,0,8,0"
-                              IsActive="{Binding ActivateLoading}"/>
+                              IsActive="{Binding IsLoading}"/>
                 <Image Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,-3,8,0"
                        Source="{Binding Status, Converter={StaticResource StatusToImageConverter}}" 
                        Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}"/>
