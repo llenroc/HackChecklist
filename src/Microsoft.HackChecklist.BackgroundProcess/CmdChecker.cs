@@ -9,29 +9,45 @@
 //
 //*********************************************************
 
+using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace Microsoft.HackChecklist.BackgroundProcess
 {
     public static class CmdChecker
     {
+        private static int lineCount = 0;
+        private static StringBuilder output = new StringBuilder();
+
         public static string RunCommand(string command)
         {
             Process process = new Process();
 
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/C " + command;
             process.StartInfo.UseShellExecute = false;
+            process.StartInfo.Arguments = "/C " + command;
             process.StartInfo.CreateNoWindow = true;
-
             process.StartInfo.RedirectStandardOutput = true;
-            process.Start();
-            
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
 
-            return output;
+            process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                // Prepend line numbers to each line of the output.
+                if (!String.IsNullOrEmpty(e.Data))
+                {
+                    lineCount++;
+                    output.Append("\n[" + lineCount + "]: " + e.Data);
+                }
+            });
+
+            process.Start();
+
+            process.BeginOutputReadLine();
+            process.WaitForExit();
+            process.Close();
+
+            return output.ToString();
         }
     }
 }
