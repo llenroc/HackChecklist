@@ -155,6 +155,18 @@
       ],
       "isOptional": "true",
       "installationNotes": "https://docs.docker.com/docker-for-windows/install/#install-docker-for-windows"
+    },
+    {
+      "name": "Git",
+      "checks": [
+        {
+          "checkType": "RunCmd",
+          "command": "git --version",
+          "expectedValue": "git version"
+        }
+      ],
+      "isOptional": "true",
+      "installationNotes": "https://git-scm.com/downloads"
     }
-  ]  
+  ]
 }
